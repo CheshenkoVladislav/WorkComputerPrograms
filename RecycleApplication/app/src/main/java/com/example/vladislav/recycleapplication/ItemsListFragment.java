@@ -1,8 +1,8 @@
 package com.example.vladislav.recycleapplication;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,16 +27,13 @@ public class ItemsListFragment extends Fragment {
     private ItemAdapter adapter = new ItemAdapter();
     RecyclerView recycler;
     Api api;
-    ItemList dataList = new ItemList();
-    private String type = "expense";
+    private String type;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate: I am");
         super.onCreate(savedInstanceState);
         api = App.getApi();
-        addItems();
-        System.out.println(ItemAdapter.itemArrayList);
     }
 
     @Nullable
@@ -52,6 +49,7 @@ public class ItemsListFragment extends Fragment {
         recycler = view.findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recycler.setAdapter(adapter);
+        addItems();
     }
 
     public static ItemsListFragment createFragment(String type){
@@ -61,10 +59,10 @@ public class ItemsListFragment extends Fragment {
     }
 
     private void addItems() {
-        retrofit2.Call<ItemList> item = api.getItems("expense"); {
+        retrofit2.Call<ItemList> item = api.getItems(type); {
             item.enqueue(new Callback<ItemList>() {
                 @Override
-                public void onResponse(retrofit2.Call<ItemList> call, Response<ItemList> response) {
+                public void onResponse(@NonNull retrofit2.Call<ItemList> call, @NonNull Response<ItemList> response) {
                     Log.d(TAG, "onResponse: " + response.body());
                     adapter.setData(response.body());
                 }
