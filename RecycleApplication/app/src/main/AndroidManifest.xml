@@ -13,15 +13,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:name=".MainActivity"
-            android:label="Учет финансов">
+            android:label="Учет финансов"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AddItemActivity" />
     </application>
 
 </manifest>

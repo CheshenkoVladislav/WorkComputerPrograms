@@ -13,9 +13,9 @@ import com.example.vladislav.recycleapplication.ItemsListFragment;
 
 public class MainPageAdapter extends FragmentPagerAdapter {
     private static final String TAG = "MainPageAdapter";
-    private String TYPE_EXPENSE = "expense";
-    private String TYPE_INCOME = "income";
-    private String TYPE_UNKNOWN = null;
+    public static String TYPE_EXPENSE = "expense";
+    public static String TYPE_INCOME = "income";
+    public static String TYPE_BALANCE = null;
     private String[]tabs = {
             "Доходы",
             "Расходы",
@@ -30,7 +30,7 @@ public class MainPageAdapter extends FragmentPagerAdapter {
         switch (position){
             case 0: return ItemsListFragment.createFragment(TYPE_INCOME);
             case 1: return ItemsListFragment.createFragment(TYPE_EXPENSE);
-            case 2: return ItemsListFragment.createFragment(TYPE_UNKNOWN);
+            case 2: return ItemsListFragment.createFragment(TYPE_BALANCE);
         }
         return null;
     }

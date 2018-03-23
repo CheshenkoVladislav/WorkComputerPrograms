@@ -19,7 +19,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemsViewHolde
     @Override
     public ItemsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_activity,parent,false);
+                .inflate(R.layout.activity_item,parent,false);
         return new ItemsViewHolder(view);
     }
 
@@ -37,6 +37,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemsViewHolde
     public void setData(ItemList dataList){
         itemArrayList = dataList.getData();
         notifyDataSetChanged();
+    }
+
+    public void addItem(Item type) {
+        itemArrayList.add(type);
+        notifyItemInserted(itemArrayList.size()-1);
     }
 
     class ItemsViewHolder extends RecyclerView.ViewHolder {

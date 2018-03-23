@@ -1,12 +1,13 @@
 package com.example.vladislav.recycleapplication.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by vladislav on 15.03.18.
  */
 
-public class Item {
+public class Item implements Serializable {
     private int id;
 
     private String name;
