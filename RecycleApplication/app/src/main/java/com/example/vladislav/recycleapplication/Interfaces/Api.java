@@ -1,4 +1,4 @@
-package com.example.vladislav.recycleapplication;
+package com.example.vladislav.recycleapplication.Interfaces;
 
 import com.example.vladislav.recycleapplication.Data.ItemList;
 

@@ -3,24 +3,24 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    android:background="@drawable/selected_item">
 
     <TextView
         android:id="@+id/nameView"
         android:text="Name"
         android:textSize="20dp"
         android:textColor="@android:color/white"
-        android:background="@android:color/holo_orange_light"
         android:layout_weight="3"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:padding="15dp"/>
     <TextView
+        android:background="@color/colorShadow"
         android:id="@+id/priceView"
         android:text="@string/price"
         android:textSize="20dp"
         android:textColor="@android:color/white"
-        android:background="@android:color/holo_orange_dark"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent"

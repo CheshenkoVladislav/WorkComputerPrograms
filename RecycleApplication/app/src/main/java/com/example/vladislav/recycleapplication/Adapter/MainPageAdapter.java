@@ -28,9 +28,18 @@ public class MainPageAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         Log.d(TAG, "getItem: " + "!!!!!!!!!!!!!!!!!!!");
         switch (position){
-            case 0: return ItemsListFragment.createFragment(TYPE_INCOME);
-            case 1: return ItemsListFragment.createFragment(TYPE_EXPENSE);
-            case 2: return ItemsListFragment.createFragment(TYPE_BALANCE);
+            case 0: {
+                ItemsListFragment fragment = ItemsListFragment.createFragment(TYPE_INCOME);
+                return fragment;
+            }
+            case 1: {
+                ItemsListFragment fragment = ItemsListFragment.createFragment(TYPE_EXPENSE);
+                return fragment;
+            }
+            case 2: {
+                ItemsListFragment fragment = ItemsListFragment.createFragment(TYPE_BALANCE);
+                return fragment;
+            }
         }
         return null;
     }

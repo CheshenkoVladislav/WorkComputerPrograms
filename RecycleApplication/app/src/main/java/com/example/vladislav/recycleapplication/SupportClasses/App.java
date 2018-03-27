@@ -1,9 +1,10 @@
-package com.example.vladislav.recycleapplication;
+package com.example.vladislav.recycleapplication.SupportClasses;
 
 import android.app.Application;
 import android.util.Log;
 
 import com.example.vladislav.recycleapplication.Data.Item;
+import com.example.vladislav.recycleapplication.Interfaces.Api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
