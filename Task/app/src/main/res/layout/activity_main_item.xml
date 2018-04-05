@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="4dp"
+    android:layout_height="98dp"
+    android:orientation="horizontal">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/relayt"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+        <ImageView
+            android:id="@+id/image"
+            android:src="@drawable/png"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_width="96dp"
+            android:layout_height="96dp" />
+
+            <TextView
+            android:id="@+id/name"
+            android:layout_toRightOf="@+id/image"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textSize="28sp"/>
+            <TextView
+                android:id="@+id/textAboutItem"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@+id/name"
+                android:layout_toRightOf="@+id/image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Info text about theme"
+                android:textSize="16sp"
+                />
+            <ImageView
+                android:id="@+id/upvoteIcon"
+                android:src="@drawable/ic_upvote_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="24dp"
+                android:layout_alignParentBottom="true"
+                />
+            <TextView
+                android:id="@+id/numbers"
+                android:textSize="15sp"
+                android:text="450"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
