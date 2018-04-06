@@ -17,8 +17,8 @@ import java.util.List;
 
 public class AdapterRV extends RecyclerView.Adapter<AdapterRV.ItemViewHolder> {
     Context context;
-    AdapterRV(Context context){
-        this.context = context;
+    public AdapterRV(){
+        setThemeList();
     }
 
     public void setThemeList() {
@@ -63,9 +63,10 @@ public class AdapterRV extends RecyclerView.Adapter<AdapterRV.ItemViewHolder> {
         }
 
         public void applyData(Theme theme) {
-            text.setText(theme.getText().getText());
-            name.setText(theme.getText().getText());
-            imageView.setImageBitmap(BitmapFactory.decodeResource(itemView.getResources(),R.drawable.png));
+            text.setText(theme.getText());
+            name.setText(theme.getText());
+            numbers.setText(theme.getText());
+//            imageView.setImageBitmap(BitmapFactory.decodeResource(itemView.getResources(),R.drawable.png));
         }
     }
 }

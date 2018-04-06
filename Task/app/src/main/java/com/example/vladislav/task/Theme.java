@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 public class Theme {
     int id;
-    ImageView image;
+    int imageId;
     String numbers;
     String name;
     String text;
@@ -16,19 +16,19 @@ public class Theme {
         this.name = name;
         this.text = text;
     }
-    public Theme(ImageView image, String numbers, String name, String text) {
-        this.image = image;
+    public Theme(int image, String numbers, String name, String text) {
+        this.imageId = image;
         this.numbers = numbers;
         this.name = name;
         this.text = text;
     }
 
-    public ImageView getImage() {
-        return image;
+    public int getImage() {
+        return imageId;
     }
 
-    public void setImage(ImageView image) {
-        this.image = image;
+    public void setImage(int image) {
+        this.imageId = image;
     }
 
     public String getNumbers() {
