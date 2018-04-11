@@ -1,9 +1,10 @@
 /* Copyright 2018 freecodeformat.com */
 package com.example.vladislav.task.Data;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 import java.util.List;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
 /* Time: 2018-04-06 14:48:54 @author freecodeformat.com @website http://www.freecodeformat.com/json2javabean.php */
 public class Posts {
 

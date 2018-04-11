@@ -1,7 +1,5 @@
 package com.example.vladislav.task;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.vladislav.task.Data.Posts;
+import com.example.vladislav.task.Interfaces.Api;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class FragmentItems extends Fragment {
     private String type = "Tech";
     AdapterRV adapter = new AdapterRV();
@@ -22,10 +27,12 @@ public class FragmentItems extends Fragment {
     public void setType(String type) {this.type = type;}
     public String getType() {return type;}
     Toolbar toolbar;
+    Api api;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        api = RetrofitClass.getApi();
     }
 
     @Nullable
@@ -42,6 +49,18 @@ public class FragmentItems extends Fragment {
         recycler = view.findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler.setAdapter(adapter);
+        Log.d(TAG, "onViewCreated: api :" + api);
+        api.getAllPosts().enqueue(new Callback<Posts>() {
+            @Override
+            public void onResponse(Call<Posts> call, Response<Posts> response) {
+                Log.d(TAG, "onResponse: call" + call + " response :" + response.message());
+            }
+
+            @Override
+            public void onFailure(Call<Posts> call, Throwable t) {
+
+            }
+        });
     }
     public static FragmentItems createFragment(String type){
         FragmentItems fragment = new FragmentItems();
