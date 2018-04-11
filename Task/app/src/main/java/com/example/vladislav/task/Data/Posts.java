@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 /* Time: 2018-04-06 14:48:54 @author freecodeformat.com @website http://www.freecodeformat.com/json2javabean.php */
 public class Posts {
-
     @JsonProperty("comments_count")
     private int commentsCount;
     private Date day;
@@ -41,12 +40,11 @@ public class Posts {
     private User user;
     @JsonProperty("votes_count")
     private int votesCount;
+
     public void setCommentsCount(int commentsCount) {
          this.commentsCount = commentsCount;
      }
-     public int getCommentsCount() {
-         return commentsCount;
-     }
+     public int getCommentsCount() {return commentsCount;}
 
     public void setDay(Date day) {
          this.day = day;

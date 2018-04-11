@@ -7,6 +7,7 @@ public class Topics {
     private int id;
     private String name;
     private String slug;
+
     public void setId(int id) {
          this.id = id;
      }

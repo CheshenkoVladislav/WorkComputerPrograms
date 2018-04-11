@@ -7,12 +7,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.vladislav.task.Data.Posts;
 import com.example.vladislav.task.Interfaces.Api;
 
 import retrofit2.Call;
@@ -28,6 +28,7 @@ public class FragmentItems extends Fragment {
     public String getType() {return type;}
     Toolbar toolbar;
     Api api;
+    JsonReader jsonReader;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,21 +51,41 @@ public class FragmentItems extends Fragment {
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler.setAdapter(adapter);
         Log.d(TAG, "onViewCreated: api :" + api);
-        api.getAllPosts().enqueue(new Callback<Posts>() {
-            @Override
-            public void onResponse(Call<Posts> call, Response<Posts> response) {
-                Log.d(TAG, "onResponse: call" + call + " response :" + response.message());
-            }
-
-            @Override
-            public void onFailure(Call<Posts> call, Throwable t) {
-
-            }
-        });
+        requestTypeData();
     }
+
     public static FragmentItems createFragment(String type){
         FragmentItems fragment = new FragmentItems();
         fragment.setType(type);
         return fragment;
+    }
+
+    private void requestTypeData() {
+        api.getPostsForCategory().enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                Log.d(TAG, "ACCEPT_RESPONSE: " + response.body());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d(TAG, "FAIL_RESPONSE: " + t.getMessage());
+            }
+        });
+    }
+
+    private void requestData() {
+        api.getAllPosts().enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                Log.d(TAG, "ACCESS_RESPONSE: " + "\nresponse : " + response.body()
+                        + "\nstatus: " + response);
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d(TAG, "FAIL_RESPONSE: " + t.getMessage());
+            }
+        });
     }
 }
