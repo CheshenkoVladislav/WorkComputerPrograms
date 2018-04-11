@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.vladislav.task.Data.Posts;
 import com.example.vladislav.task.Interfaces.Api;
 
 import retrofit2.Call;
@@ -52,6 +53,8 @@ public class FragmentItems extends Fragment {
         recycler.setAdapter(adapter);
         Log.d(TAG, "onViewCreated: api :" + api);
         requestTypeData();
+//        requestData();
+//        requestDocs();
     }
 
     public static FragmentItems createFragment(String type){
@@ -74,16 +77,29 @@ public class FragmentItems extends Fragment {
         });
     }
 
-    private void requestData() {
-        api.getAllPosts().enqueue(new Callback<String>() {
+    private void requestDocs(){
+        api.getDocs().enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void requestData() {
+        api.getAllPosts().enqueue(new Callback<Posts>() {
+            @Override
+            public void onResponse(Call<Posts> call, Response<Posts> response) {
                 Log.d(TAG, "ACCESS_RESPONSE: " + "\nresponse : " + response.body()
                         + "\nstatus: " + response);
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<Posts> call, Throwable t) {
                 Log.d(TAG, "FAIL_RESPONSE: " + t.getMessage());
             }
         });

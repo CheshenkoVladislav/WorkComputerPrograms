@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClass extends Application {
     private static final String TAG = "RetrofitClass";
     private String URL = BuildConfig.BASE_URL;
-    private String URL2 = "https://api.producthunt.com/";
+    private String URL2 = "https://producthunt.com/";
     private String TOKEN_KEY = "login";
     private String TOKEN = "591f99547f569b05ba7d8777e2e0824eea16c440292cce1f8dfb3952cc9937ff";
     HttpLoggingInterceptor inter;
@@ -31,7 +31,7 @@ public class RetrofitClass extends Application {
         httpClient.addInterceptor(inter);
         Gson gsonConverter = new GsonBuilder().create();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(URL)
+                .baseUrl(URL2)
                 .addConverterFactory(GsonConverterFactory.create(gsonConverter))
                 .client(httpClient.build())
                 .build();
