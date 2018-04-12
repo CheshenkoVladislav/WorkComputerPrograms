@@ -25,11 +25,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: MAIN ACTIVITY CREATED");
-        FragmentItems fragment = new FragmentItems();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.add(R.id.fragmentContainer, fragment);
-        ft.commit();
+//        FragmentItems fragment = new FragmentItems();
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction ft = fragmentManager.beginTransaction();
+//        ft.add(R.id.fragmentContainer, fragment);
+//        ft.commit();
 
         setContentView(R.layout.activity_main);
         final Toolbar toolbar = findViewById(R.id.toolbar);
@@ -60,10 +60,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        Intent intent = new Intent(this,SignInActivity.class);
-//        startActivity(intent);
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: " + SignInActivity.res);
+        if (SignInActivity.res == null) {
+            Intent intent = new Intent(this, SignInActivity.class);
+            startActivity(intent);
+        }
+    }
 }
