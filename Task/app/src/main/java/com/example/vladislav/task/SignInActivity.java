@@ -1,14 +1,12 @@
 package com.example.vladislav.task;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
 import com.example.vladislav.task.Data.TokenRequest;
-import com.example.vladislav.task.Interfaces.Api;
 import com.twitter.sdk.android.core.DefaultLogger;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Twitter;
@@ -17,7 +15,6 @@ import com.twitter.sdk.android.core.TwitterConfig;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
-import com.twitter.sdk.android.core.*;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,22 +50,24 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (res == null)twitterLoginButton.setEnabled(true);
-        else twitterLoginButton.setEnabled(false);
         loginTwitter();
+        twitterLoginButton.setEnabled(true);
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == TwitterAuthConfig.DEFAULT_AUTH_REQUEST_CODE && resultCode == RESULT_OK)
+        twitterLoginButton.onActivityResult(requestCode,resultCode,data);
+        Log.d(TAG, "onActivityResult: " + data.getDataString());
+    }
 
     private void loginTwitter() {
         twitterLoginButton.setCallback(new com.twitter.sdk.android.core.Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
-                Log.d(TAG, "success: " + result.data + " response: " + result.response);
-                res = result;
+                Log.d(TAG, "\nsuccess: " + result.data + "\nusername: " + result.data.getUserName() + "\nid: " + result.data.getUserId()
+                + "\n" + result.response);
             }
 
             @Override
