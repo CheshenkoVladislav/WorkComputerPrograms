@@ -22,6 +22,11 @@ import java.util.List;
 public class SignInActivity extends AppCompatActivity {
     Button btn;
     private static final String TAG = "SignInActivity";
+    public static String userId;
+    private String[]access = new String[]{VKScope.PHOTOS,
+            VKScope.VIDEO, VKScope.DIRECT,VKScope.ADS,
+            VKScope.PAGES,VKScope.STATS,VKScope.STATUS,
+            VKScope.WALL,VKScope.NOHTTPS,VKScope.GROUPS,VKScope.OFFLINE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +36,13 @@ public class SignInActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VKSdk.login(SignInActivity.this,VKScope.AUDIO);
+                VKSdk.login(SignInActivity.this,access);
             }
         });
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
             @Override
             public void onResult(VKAccessToken res) {
@@ -46,6 +51,7 @@ public class SignInActivity extends AppCompatActivity {
 //                + "\nsecret: " + res.secret
 //                + "\nemail: " + res.email
                 + "\nuserID: " + res.userId);
+                userId = res.userId;
             }
             @Override
             public void onError(VKError error) {
