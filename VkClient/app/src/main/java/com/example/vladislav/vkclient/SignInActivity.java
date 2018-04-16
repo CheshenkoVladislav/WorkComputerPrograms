@@ -26,7 +26,7 @@ public class SignInActivity extends AppCompatActivity {
     private String[]access = new String[]{VKScope.PHOTOS,
             VKScope.VIDEO, VKScope.DIRECT,VKScope.ADS,
             VKScope.PAGES,VKScope.STATS,VKScope.STATUS,
-            VKScope.WALL,VKScope.NOHTTPS,VKScope.GROUPS,VKScope.OFFLINE};
+            VKScope.WALL,VKScope.NOHTTPS,VKScope.GROUPS,VKScope.OFFLINE,};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
