@@ -15,16 +15,13 @@ import android.view.ViewGroup;
 import com.example.vladislav.vkclient.API.Vk;
 import com.example.vladislav.vkclient.Adapters.RecyclerViewAdapter;
 import com.example.vladislav.vkclient.App;
-import com.example.vladislav.vkclient.Data.AlbumRoot;
-import com.example.vladislav.vkclient.Data.NewsfeedRoot;
-import com.example.vladislav.vkclient.Data.PhotoRoot;
-import com.example.vladislav.vkclient.Data.ProfileInfoRoot;
+import com.example.vladislav.vkclient.Data.ClassesForWallParse.Items;
+import com.example.vladislav.vkclient.Data.ClassesForWallParse.Root;
+
 import com.example.vladislav.vkclient.R;
-import com.example.vladislav.vkclient.SignInActivity;
-import com.vk.sdk.VKScope;
-import com.vk.sdk.VKSdk;
-import com.vk.sdk.api.VKApi;
-import com.vk.sdk.api.VKRequest;
+
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,15 +47,17 @@ public class FotoFragment extends Fragment{
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new LinearLayoutManager(view.getContext()));
         Vk vk = App.getVk();
-        vk.getWall(filters,10,App.ACCESS_TOKEN,App.VERSION).enqueue(new Callback<NewsfeedRoot>() {
+        vk.getWall(filters,10,App.ACCESS_TOKEN,App.VERSION).enqueue(new Callback<Root>() {
             @Override
-            public void onResponse(Call<NewsfeedRoot> call, Response<NewsfeedRoot> response) {
-                Log.d(TAG, "ACCESS_RESPONSE: " + response.body().getResponse().getItems().get(1).getPhoto_130());
+            public void onResponse(Call<Root> call, Response<Root> response) {
+                Root root = response.body();
+                List<Items> items = response.body().getResponse().getItems();
+                Log.d(TAG, "ACCESS_RESPONSE: " + items.get(0).getCopy_history().get(0).getAttachments().get(0).getPhoto().getPhoto_1280());
             }
 
             @Override
-            public void onFailure(Call<NewsfeedRoot> call, Throwable t) {
-
+            public void onFailure(Call<Root> call, Throwable t) {
+                Log.d(TAG, "FAIL_RESPONSE: " + t.getMessage());
             }
         });
     }

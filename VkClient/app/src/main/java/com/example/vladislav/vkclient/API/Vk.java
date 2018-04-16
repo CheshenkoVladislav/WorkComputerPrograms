@@ -1,6 +1,7 @@
 package com.example.vladislav.vkclient.API;
 
 import com.example.vladislav.vkclient.Data.AlbumRoot;
+import com.example.vladislav.vkclient.Data.ClassesForWallParse.Root;
 import com.example.vladislav.vkclient.Data.NewsfeedRoot;
 import com.example.vladislav.vkclient.Data.PhotoRoot;
 import com.example.vladislav.vkclient.Data.ProfileInfoRoot;
@@ -27,5 +28,5 @@ public interface Vk {
     @POST("newsfeed.get")
     Call<NewsfeedRoot>getNewsFeed(@Query("filters")String[]filters, @Query("count")int count, @Query("access_token")String token, @Query("v")String v);
     @GET("wall.get")
-    Call<NewsfeedRoot>getWall(@Query("filters")String[]filters, @Query("count")int count, @Query("access_token")String token, @Query("v")String v);
+    Call<Root>getWall(@Query("filters")String[]filters, @Query("count")int count, @Query("access_token")String token, @Query("v")String v);
 }

@@ -17,17 +17,17 @@ public class Items {
 
     private String text;
 
-    private List<Root.Attachments> attachments;
+    private List<CopyHistory> copy_history;
 
-    private Root.Post_source post_source;
+    private Post_source post_source;
 
-    private Root.Comments comments;
+    private Comments comments;
 
-    private Root.Likes likes;
+    private Likes likes;
 
-    private Root.Reposts reposts;
+    private Reposts reposts;
 
-    private Root.Views views;
+    private Views views;
 
     public void setId(int id){
         this.id = id;
@@ -71,40 +71,40 @@ public class Items {
     public String getText(){
         return this.text;
     }
-    public void setAttachments(List<Root.Attachments> attachments){
-        this.attachments = attachments;
+    public void setCopy_history(List<CopyHistory> attachments){
+        this.copy_history = attachments;
     }
-    public List<Root.Attachments> getAttachments(){
-        return this.attachments;
+    public List<CopyHistory> getCopy_history(){
+        return this.copy_history;
     }
-    public void setPost_source(Root.Post_source post_source){
+    public void setPost_source(Post_source post_source){
         this.post_source = post_source;
     }
-    public Root.Post_source getPost_source(){
+    public Post_source getPost_source(){
         return this.post_source;
     }
-    public void setComments(Root.Comments comments){
+    public void setComments(Comments comments){
         this.comments = comments;
     }
-    public Root.Comments getComments(){
+    public Comments getComments(){
         return this.comments;
     }
-    public void setLikes(Root.Likes likes){
+    public void setLikes(Likes likes){
         this.likes = likes;
     }
-    public Root.Likes getLikes(){
+    public Likes getLikes(){
         return this.likes;
     }
-    public void setReposts(Root.Reposts reposts){
+    public void setReposts(Reposts reposts){
         this.reposts = reposts;
     }
-    public Root.Reposts getReposts(){
+    public Reposts getReposts(){
         return this.reposts;
     }
-    public void setViews(Root.Views views){
+    public void setViews(Views views){
         this.views = views;
     }
-    public Root.Views getViews(){
+    public Views getViews(){
         return this.views;
     }
 }
