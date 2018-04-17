@@ -49,7 +49,8 @@ public class FotoFragment extends Fragment{
         vk.getWall(filters,10,App.ACCESS_TOKEN,App.VERSION).enqueue(new Callback<Root>() {
             @Override
             public void onResponse(Call<Root> call, Response<Root> response) {
-                adapter.setData(response.body().getResponse().getItems());
+                List<Items> items = response.body().getResponse().getItems();
+                adapter.setData(items);
                 Log.d(TAG, "ACCESS_RESPONSE: " + response.body().getResponse().getItems().size());
             }
 

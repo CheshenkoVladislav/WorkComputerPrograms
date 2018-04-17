@@ -1,6 +1,7 @@
 package com.example.vladislav.vkclient.Adapters;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +23,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public List<Attachments> attachmentPhotos = new ArrayList<>();
     public List<CopyHistory> histories = new ArrayList<>();
     public List<ImageData> images = new ArrayList<>();
+    public List<String> imageUrls = new ArrayList<>();
     private static final String TAG = "RecyclerViewAdapter";
+
     @NonNull
     @Override
     public FotoItemsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -35,19 +38,36 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull FotoItemsViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: " + histories.size());
-        String image = histories.get(0).getAttachments().get(position).getPhoto().getPhoto_604();
+        String image = imageUrls.get(position);
         holder.applyData(image);
 
     }
+
     public void setData(List<Items> photoItems){
-        Log.d(TAG, "setData: " + photoItems.size());
-            histories = photoItems.get(0).getCopy_history();
-            notifyDataSetChanged();
+        catchingUrls(photoItems);
+        notifyDataSetChanged();
+    }
+
+    //TODO: Return 7/10 ; need correct cycle
+    private void catchingUrls(List<Items>photoItems) {
+        for (int i = 0; i < photoItems.size(); i++) {
+            Items items = photoItems.get(i);
+            if (items.getCopy_history()!=null) {
+                for (int j = 0; j < items.getCopy_history().size(); j++) {
+                    System.out.println(items.getCopy_history().size());
+                    CopyHistory copyHistory = items.getCopy_history().get(j);
+                    for (int k = 0; k < copyHistory.getAttachments().size(); k++) {
+                        if (copyHistory.getAttachments().get(k).getPhoto() != null)
+                            imageUrls.add(copyHistory.getAttachments().get(k).getPhoto().getPhoto_604());
+                    }
+                }
+            }
+        }
     }
 
     @Override
     public int getItemCount() {
-        return attachmentPhotos.size();
+        return imageUrls.size();
     }
 
 //    public void fillingList(){
@@ -57,7 +77,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 //            else attachmentPhotos.add(new ImageData(R.drawable.dr_123,a));
 //        }
 //    }
-    public class FotoItemsViewHolder extends RecyclerView.ViewHolder{
+   class FotoItemsViewHolder extends RecyclerView.ViewHolder{
         ImageView image1;
         ImageView image2;
 
@@ -67,7 +87,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             image2 = itemView.findViewById(R.id.imageView5);
         }
         public void applyData(String image){
-            Picasso.get().load(image).resize(150,150).into(this.image1);
+            Picasso.get().load(image).resize(200,200).into(this.image1);
+            Picasso.get().load(R.drawable.dr_123).resize(200,200).into(this.image2);
         }
 //        public void applyData(ImageData image1,ImageData image2){
 //            Picasso.get().load(image1.getImageDrawable()).resize(150,150).into(this.image1);
