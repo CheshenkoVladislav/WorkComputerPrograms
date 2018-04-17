@@ -71,9 +71,7 @@ public class Items {
     public String getText(){
         return this.text;
     }
-    public void setCopy_history(List<CopyHistory> attachments){
-        this.copy_history = attachments;
-    }
+    public void setCopy_history(List<CopyHistory> attachments){this.copy_history = attachments;}
     public List<CopyHistory> getCopy_history(){
         return this.copy_history;
     }
@@ -104,7 +102,5 @@ public class Items {
     public void setViews(Views views){
         this.views = views;
     }
-    public Views getViews(){
-        return this.views;
-    }
+    public Views getViews(){return this.views;}
 }

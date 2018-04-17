@@ -37,7 +37,6 @@ public class FotoFragment extends Fragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_foto,container,false);
-        adapter.fillingList();
         return view;
 
     }
@@ -50,9 +49,8 @@ public class FotoFragment extends Fragment{
         vk.getWall(filters,10,App.ACCESS_TOKEN,App.VERSION).enqueue(new Callback<Root>() {
             @Override
             public void onResponse(Call<Root> call, Response<Root> response) {
-                Root root = response.body();
-                List<Items> items = response.body().getResponse().getItems();
-                Log.d(TAG, "ACCESS_RESPONSE: " + items.get(0).getCopy_history().get(0).getAttachments().get(0).getPhoto().getPhoto_1280());
+                adapter.setData(response.body().getResponse().getItems());
+                Log.d(TAG, "ACCESS_RESPONSE: " + response.body().getResponse().getItems().size());
             }
 
             @Override
