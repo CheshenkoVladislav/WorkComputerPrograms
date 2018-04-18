@@ -18,6 +18,7 @@ import com.example.vladislav.vkclient.App;
 import com.example.vladislav.vkclient.Data.ClassesForWallParse.Items;
 import com.example.vladislav.vkclient.Data.ClassesForWallParse.Root;
 
+import com.example.vladislav.vkclient.Data.Photo.PhotoRoot;
 import com.example.vladislav.vkclient.R;
 
 
@@ -46,18 +47,30 @@ public class FotoFragment extends Fragment{
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new LinearLayoutManager(view.getContext()));
         Vk vk = App.getVk();
-        vk.getWall(filters,10,App.ACCESS_TOKEN,App.VERSION).enqueue(new Callback<Root>() {
+        vk.getAllPhotos(App.ACCESS_TOKEN,App.VERSION).enqueue(new Callback<PhotoRoot>() {
             @Override
-            public void onResponse(Call<Root> call, Response<Root> response) {
-                List<Items> items = response.body().getResponse().getItems();
-                adapter.setData(items);
-                Log.d(TAG, "ACCESS_RESPONSE: " + response.body().getResponse().getItems().size());
+            public void onResponse(Call<PhotoRoot> call, Response<PhotoRoot> response) {
+                adapter.setData(response.body().getResponse().getItems());
+                Log.d(TAG, "PHOTO_GOOD_RESPONSE: " + response.body());
             }
 
             @Override
-            public void onFailure(Call<Root> call, Throwable t) {
+            public void onFailure(Call<PhotoRoot> call, Throwable t) {
                 Log.d(TAG, "FAIL_RESPONSE: " + t.getMessage());
             }
         });
+//        vk.getWall(filters,100,App.ACCESS_TOKEN,App.VERSION).enqueue(new Callback<Root>() {
+//            @Override
+//            public void onResponse(Call<Root> call, Response<Root> response) {
+//                List<Items> items = response.body().getResponse().getItems();
+//                adapter.setData(items);
+//                Log.d(TAG, "ACCESS_RESPONSE: " + response.body().getResponse().getItems().size());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Root> call, Throwable t) {
+//                Log.d(TAG, "FAIL_RESPONSE: " + t.getMessage());
+//            }
+//        });
     }
 }

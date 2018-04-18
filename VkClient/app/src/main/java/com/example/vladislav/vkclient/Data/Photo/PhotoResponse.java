@@ -1,4 +1,4 @@
-package com.example.vladislav.vkclient.Data;
+package com.example.vladislav.vkclient.Data.Photo;
 
 import java.util.List;
 
@@ -6,8 +6,6 @@ public class PhotoResponse {
     private int count;
 
     private List<PhotoItems> items;
-
-    private int more;
 
     public void setCount(int count){
         this.count = count;
@@ -20,11 +18,5 @@ public class PhotoResponse {
     }
     public List<PhotoItems> getItems(){
         return this.items;
-    }
-    public void setMore(int more){
-        this.more = more;
-    }
-    public int getMore(){
-        return this.more;
     }
 }

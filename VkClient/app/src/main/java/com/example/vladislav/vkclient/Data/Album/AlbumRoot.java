@@ -1,4 +1,4 @@
-package com.example.vladislav.vkclient.Data;
+package com.example.vladislav.vkclient.Data.Album;
 
 public class AlbumRoot {
 

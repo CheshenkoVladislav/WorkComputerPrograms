@@ -1,11 +1,11 @@
-package com.example.vladislav.vkclient.Data;
+package com.example.vladislav.vkclient.Data.Album;
 
 import java.util.List;
 
-public class NewsFeedPhoto {
+public class AlbumResponse {
     private int count;
 
-    private List<NewsFeedAllItems> items;
+    private List<AlbumItems> items;
 
     public void setCount(int count){
         this.count = count;
@@ -13,10 +13,10 @@ public class NewsFeedPhoto {
     public int getCount(){
         return this.count;
     }
-    public void setItems(List<NewsFeedAllItems> items){
+    public void setItems(List<AlbumItems> items){
         this.items = items;
     }
-    public List<NewsFeedAllItems> getItems(){
+    public List<AlbumItems> getItems(){
         return this.items;
     }
 }

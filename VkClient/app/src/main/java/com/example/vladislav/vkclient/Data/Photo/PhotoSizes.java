@@ -1,4 +1,4 @@
-package com.example.vladislav.vkclient.Data;
+package com.example.vladislav.vkclient.Data.Photo;
 
 public class PhotoSizes {
     private String src;

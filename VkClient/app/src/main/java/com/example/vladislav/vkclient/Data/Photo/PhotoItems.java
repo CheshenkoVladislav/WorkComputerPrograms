@@ -1,6 +1,10 @@
-package com.example.vladislav.vkclient.Data;
+package com.example.vladislav.vkclient.Data.Photo;
 
-public class NewsFeed1Item {
+import com.example.vladislav.vkclient.Data.Likes;
+
+import java.util.List;
+
+public class PhotoItems {
     private int id;
 
     private int album_id;
@@ -26,18 +30,6 @@ public class NewsFeed1Item {
     private String text;
 
     private int date;
-
-    private String access_key;
-
-    private Likes likes;
-
-    private Reposts reposts;
-
-    private Comments comments;
-
-    private int can_comment;
-
-    private int can_repost;
 
     public void setId(int id){
         this.id = id;
@@ -116,41 +108,5 @@ public class NewsFeed1Item {
     }
     public int getDate(){
         return this.date;
-    }
-    public void setAccess_key(String access_key){
-        this.access_key = access_key;
-    }
-    public String getAccess_key(){
-        return this.access_key;
-    }
-    public void setLikes(Likes likes){
-        this.likes = likes;
-    }
-    public Likes getLikes(){
-        return this.likes;
-    }
-    public void setReposts(Reposts reposts){
-        this.reposts = reposts;
-    }
-    public Reposts getReposts(){
-        return this.reposts;
-    }
-    public void setComments(Comments comments){
-        this.comments = comments;
-    }
-    public Comments getComments(){
-        return this.comments;
-    }
-    public void setCan_comment(int can_comment){
-        this.can_comment = can_comment;
-    }
-    public int getCan_comment(){
-        return this.can_comment;
-    }
-    public void setCan_repost(int can_repost){
-        this.can_repost = can_repost;
-    }
-    public int getCan_repost(){
-        return this.can_repost;
     }
 }

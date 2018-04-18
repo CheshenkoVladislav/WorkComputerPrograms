@@ -1,4 +1,6 @@
-package com.example.vladislav.vkclient.Data;
+package com.example.vladislav.vkclient.Data.NewsFeed;
+
+import com.example.vladislav.vkclient.Data.ProfilesPack.Profiles;
 
 import java.util.List;
 

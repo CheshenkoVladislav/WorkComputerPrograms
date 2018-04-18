@@ -1,10 +1,10 @@
 package com.example.vladislav.vkclient.API;
 
-import com.example.vladislav.vkclient.Data.AlbumRoot;
+import com.example.vladislav.vkclient.Data.Album.AlbumRoot;
 import com.example.vladislav.vkclient.Data.ClassesForWallParse.Root;
-import com.example.vladislav.vkclient.Data.NewsfeedRoot;
-import com.example.vladislav.vkclient.Data.PhotoRoot;
-import com.example.vladislav.vkclient.Data.ProfileInfoRoot;
+import com.example.vladislav.vkclient.Data.NewsFeed.NewsfeedRoot;
+import com.example.vladislav.vkclient.Data.Photo.PhotoRoot;
+import com.example.vladislav.vkclient.Data.ProfilesPack.ProfileInfoRoot;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

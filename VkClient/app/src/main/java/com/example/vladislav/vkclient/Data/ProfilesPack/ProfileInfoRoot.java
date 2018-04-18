@@ -1,4 +1,6 @@
-package com.example.vladislav.vkclient.Data;
+package com.example.vladislav.vkclient.Data.ProfilesPack;
+
+import com.example.vladislav.vkclient.Data.MyInfo;
 
 public class ProfileInfoRoot {
     private MyInfo response;

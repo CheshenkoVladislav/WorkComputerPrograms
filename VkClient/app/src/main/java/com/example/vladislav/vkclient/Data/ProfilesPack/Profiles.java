@@ -1,4 +1,4 @@
-package com.example.vladislav.vkclient.Data;
+package com.example.vladislav.vkclient.Data.ProfilesPack;
 
 public class Profiles {
     private int id;
