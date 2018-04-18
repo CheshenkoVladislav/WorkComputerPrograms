@@ -1,10 +1,10 @@
 package com.example.vladislav.vkclient.Fragments;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,27 +12,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.vladislav.vkclient.API.Vk;
+import com.example.vladislav.vkclient.Interfaces.LoadMorePhotos;
+import com.example.vladislav.vkclient.Interfaces.Vk;
 import com.example.vladislav.vkclient.Adapters.RecyclerViewAdapter;
 import com.example.vladislav.vkclient.App;
-import com.example.vladislav.vkclient.Data.ClassesForWallParse.Items;
-import com.example.vladislav.vkclient.Data.ClassesForWallParse.Root;
 
 import com.example.vladislav.vkclient.Data.Photo.PhotoRoot;
 import com.example.vladislav.vkclient.R;
 
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class FotoFragment extends Fragment{
+public class FotoFragment extends Fragment {
     RecyclerView recycler;
+    SwipeRefreshLayout refresh;
     String [] filters = new String[]{"photo"};
     RecyclerViewAdapter adapter = new RecyclerViewAdapter();
+    Vk vk;
     private static final String TAG = "FotoFragment";
     @Nullable
     @Override
@@ -46,31 +45,52 @@ public class FotoFragment extends Fragment{
         recycler = view.findViewById(R.id.recycler);
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        Vk vk = App.getVk();
-        vk.getAllPhotos(App.ACCESS_TOKEN,App.VERSION).enqueue(new Callback<PhotoRoot>() {
+
+        adapter.setLoadMorePhotos(new AdapterLoadMoreItems());
+        vk = App.getVk();
+        refresh = view.findViewById(R.id.refresh);
+        dataInsert();
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                dataInsert();
+            }
+        });
+    }
+
+    private void dataInsert() {
+        vk.getAllPhotos(0,App.ACCESS_TOKEN,App.VERSION).enqueue(new Callback<PhotoRoot>() {
             @Override
             public void onResponse(Call<PhotoRoot> call, Response<PhotoRoot> response) {
                 adapter.setData(response.body().getResponse().getItems());
                 Log.d(TAG, "PHOTO_GOOD_RESPONSE: " + response.body());
+                refresh.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<PhotoRoot> call, Throwable t) {
                 Log.d(TAG, "FAIL_RESPONSE: " + t.getMessage());
+                refresh.setRefreshing(false);
             }
         });
-//        vk.getWall(filters,100,App.ACCESS_TOKEN,App.VERSION).enqueue(new Callback<Root>() {
-//            @Override
-//            public void onResponse(Call<Root> call, Response<Root> response) {
-//                List<Items> items = response.body().getResponse().getItems();
-//                adapter.setData(items);
-//                Log.d(TAG, "ACCESS_RESPONSE: " + response.body().getResponse().getItems().size());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Root> call, Throwable t) {
-//                Log.d(TAG, "FAIL_RESPONSE: " + t.getMessage());
-//            }
-//        });
+    }
+
+    public class AdapterLoadMoreItems implements LoadMorePhotos{
+
+        @Override
+        public void loadPhotos() {
+            vk.getAllPhotos(adapter.packageUrls.size(),App.ACCESS_TOKEN,App.VERSION).enqueue(new Callback<PhotoRoot>() {
+                @Override
+                public void onResponse(Call<PhotoRoot> call, Response<PhotoRoot> response) {
+                    adapter.loadMore(response.body().getResponse().getItems());
+                    Log.d(TAG, "LOADING_SUCCESS : " + response.body());
+                }
+
+                @Override
+                public void onFailure(Call<PhotoRoot> call, Throwable t) {
+
+                }
+            });
+        }
     }
 }

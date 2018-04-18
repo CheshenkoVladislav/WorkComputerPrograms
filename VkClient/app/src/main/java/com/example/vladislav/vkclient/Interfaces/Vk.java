@@ -1,4 +1,4 @@
-package com.example.vladislav.vkclient.API;
+package com.example.vladislav.vkclient.Interfaces;
 
 import com.example.vladislav.vkclient.Data.Album.AlbumRoot;
 import com.example.vladislav.vkclient.Data.ClassesForWallParse.Root;
@@ -20,7 +20,7 @@ public interface Vk {
 
     //Не Работает
     @GET("photos.getAll")
-    Call<PhotoRoot>getAllPhotos(@Query("access_token")String token,@Query("v")String v);
+    Call<PhotoRoot>getAllPhotos(@Query("offset")int offset, @Query("access_token")String token,@Query("v")String v);
 
     @GET("photos.getAlbums")
     Call<AlbumRoot>getAlbums(@Query("owner_id")int id, @Query("access_token")String token, @Query("v")String v);

@@ -1,14 +1,10 @@
 package com.example.vladislav.vkclient;
 
 import android.app.Application;
-import android.app.Service;
-import android.text.TextUtils;
 
-import com.example.vladislav.vkclient.API.Vk;
+import com.example.vladislav.vkclient.Interfaces.Vk;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.vk.sdk.VKAccessToken;
-import com.vk.sdk.VKAccessTokenTracker;
 import com.vk.sdk.VKSdk;
 
 import okhttp3.OkHttpClient;

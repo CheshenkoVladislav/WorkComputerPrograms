@@ -2,6 +2,7 @@ package com.example.vladislav.vkclient.Adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,17 +10,25 @@ import android.widget.ImageView;
 
 import com.example.vladislav.vkclient.Data.Photo.PhotoItems;
 import com.example.vladislav.vkclient.Data.UrlsForRecycleItem;
+import com.example.vladislav.vkclient.Interfaces.LoadMorePhotos;
 import com.example.vladislav.vkclient.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.FotoItemsViewHolder> {
     public List<String> imageUrls = new ArrayList<>();
     public List<UrlsForRecycleItem>packageUrls = new ArrayList<>();
     public List<PhotoItems>photos = new ArrayList<>();
+    private LoadMorePhotos loadMorePhotos;
+    public HashSet<String> urlsNoRepetitive = new HashSet<>();
     private static final String TAG = "RecyclerViewAdapter";
+
+    public void setLoadMorePhotos(LoadMorePhotos loadMorePhotos) {
+        this.loadMorePhotos = loadMorePhotos;
+    }
 
     @NonNull
     @Override
@@ -41,16 +50,35 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             image = packageUrls.get(position).getUrl1();
             holder.applyData(image);
         }
+        if (position == packageUrls.size()-1){
+            loadMorePhotos.loadPhotos();
+        }
 
 
     }
 
+    @Override
+    public int getItemCount() {
+        return packageUrls.size();
+    }
+
     public void setData(List<PhotoItems> photoItems){
+        if (packageUrls.size() != 0){
+            Log.d(TAG, "before remove items: " + packageUrls.size());
+            packageUrls.clear();
+            imageUrls.clear();
+        }
+        Log.d(TAG, "after remove items: " + packageUrls.size());
         catchingUrls(photoItems);
         packUrlsInRecycleItem(imageUrls);
         notifyDataSetChanged();
     }
 
+    public void loadMore(List<PhotoItems> newItems) {
+        catchingUrls(newItems);
+        packUrlsInRecycleItem(imageUrls);
+        notifyDataSetChanged();
+    }
     private void packUrlsInRecycleItem(List<String> imageUrls) {
         for (int i = 0; i < imageUrls.size(); i+=2) {
             UrlsForRecycleItem photo = new UrlsForRecycleItem();
@@ -65,25 +93,31 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     //TODO: Return 7/10 ; need correct cycle
+
     private void catchingUrls(List<PhotoItems>photoItems) {
+        removeRepeatItems(photoItems);
         for (int i = 0; i < photoItems.size(); i++) {
             imageUrls.add(photoItems.get(i).getPhoto_604());
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return packageUrls.size();
+    private void removeRepeatItems(List<PhotoItems> newItems) {
+        for (int i = 0; i < newItems.size(); i++) {
+            for (int j = 0; j < imageUrls.size(); j++) {
+
+            }
+        }
     }
 
-//    public void fillingList(){
-//        int a = 0;
-//        for (int i = 0; i < 5; i++) {
-//            if (a == 0) attachmentPhotos.add(new ImageData(R.drawable.dr_123,R.drawable.vk_clear_shape));
-//            else attachmentPhotos.add(new ImageData(R.drawable.dr_123,a));
-//        }
-//    }
-   class FotoItemsViewHolder extends RecyclerView.ViewHolder{
+    //    }
+    //        }
+    //            else attachmentPhotos.add(new ImageData(R.drawable.dr_123,a));
+    //            if (a == 0) attachmentPhotos.add(new ImageData(R.drawable.dr_123,R.drawable.vk_clear_shape));
+    //        for (int i = 0; i < 5; i++) {
+    //        int a = 0;
+    //    public void fillingList(){
+    class FotoItemsViewHolder extends RecyclerView.ViewHolder{
+
         ImageView image1;
         ImageView image2;
 
