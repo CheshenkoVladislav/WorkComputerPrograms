@@ -23,7 +23,8 @@
             android:name="com.vk.sdk.VKServiceActivity"
             android:label="ServiceActivity"
             android:theme="@style/VK.Transparent" />
-        <activity android:name=".SignInActivity"></activity>
+        <activity android:name=".SignInActivity" />
+        <activity android:name=".MoreInfoActivity"></activity>
     </application>
 
 </manifest>

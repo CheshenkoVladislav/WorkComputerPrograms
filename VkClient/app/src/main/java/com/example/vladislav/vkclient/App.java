@@ -14,9 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class App extends Application {
     static Vk vk;
-    String BASE_URL = "https://api.vk.com/method/";
     public static String ACCESS_TOKEN = "e5c4c79050065d9826723d1ccf98214a72841a661363c43c405f6cfd36ff224bfe9e441ce51bf1d11dd6e";
-    public static String VERSION = "5.74";
 
     @Override
     public void onCreate() {
@@ -30,7 +28,7 @@ public class App extends Application {
         Gson gson = new GsonBuilder()
                 .create();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(BuildConfig.BASE_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();

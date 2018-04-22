@@ -14,6 +14,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "BASE_URL", "\"https://api.vk.com/method/\""
+            buildConfigField "String", "VERSION", "5.74"
+        }
+        debug {
+            buildConfigField "String", "BASE_URL", "\"https://api.vk.com/method/\""
+            buildConfigField "String", "VERSION", "\"5.74\""
         }
     }
 }
@@ -29,6 +35,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.vk:androidsdk:1.6.8'
 
+    implementation 'com.github.bumptech.glide:glide:4.6.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'

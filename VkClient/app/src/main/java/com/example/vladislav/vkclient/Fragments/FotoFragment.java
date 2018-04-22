@@ -1,25 +1,31 @@
 package com.example.vladislav.vkclient.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.example.vladislav.vkclient.Interfaces.LoadMorePhotos;
-import com.example.vladislav.vkclient.Interfaces.Vk;
 import com.example.vladislav.vkclient.Adapters.RecyclerViewAdapter;
+import com.example.vladislav.vkclient.Adapters.ViewPagerAdapter;
+import com.example.vladislav.vkclient.BuildConfig;
+import com.example.vladislav.vkclient.Interfaces.additionalFunctions;
 import com.example.vladislav.vkclient.App;
-
 import com.example.vladislav.vkclient.Data.Photo.PhotoRoot;
+import com.example.vladislav.vkclient.Interfaces.Vk;
+import com.example.vladislav.vkclient.MoreInfoActivity;
 import com.example.vladislav.vkclient.R;
-
+import com.vk.sdk.VKAccessToken;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,12 +33,18 @@ import retrofit2.Response;
 
 
 public class FotoFragment extends Fragment {
-    RecyclerView recycler;
-    SwipeRefreshLayout refresh;
-    String [] filters = new String[]{"photo"};
-    RecyclerViewAdapter adapter = new RecyclerViewAdapter();
-    Vk vk;
+
+    private RecyclerView recycler;
+    public RecyclerView getRecycler() {return recycler;}
+
+    private SwipeRefreshLayout refresh;
+    private RecyclerViewAdapter adapter = new RecyclerViewAdapter();
+
+    private Vk vk;
+    private int photosCount = 80;
+    private String TYPE = "foto";
     private static final String TAG = "FotoFragment";
+    public static String IMAGE_URL_KEY = "imageUrl";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,9 +56,9 @@ public class FotoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recycler = view.findViewById(R.id.recycler);
         recycler.setAdapter(adapter);
-        recycler.setLayoutManager(new LinearLayoutManager(view.getContext()));
-
-        adapter.setLoadMorePhotos(new AdapterLoadMoreItems());
+        int columnCount = 2;
+        recycler.setLayoutManager(new GridLayoutManager(getActivity(),columnCount));
+        adapter.setAdditionalFunctions(new AdapterLoadMoreItems());
         vk = App.getVk();
         refresh = view.findViewById(R.id.refresh);
         dataInsert();
@@ -57,14 +69,17 @@ public class FotoFragment extends Fragment {
             }
         });
     }
-
+    //first insert data or refreshing
     private void dataInsert() {
-        vk.getAllPhotos(0,App.ACCESS_TOKEN,App.VERSION).enqueue(new Callback<PhotoRoot>() {
+        int offsetPhotos = 0;
+        vk.getAllPhotos(offsetPhotos,photosCount,VKAccessToken.currentToken().accessToken, BuildConfig.VERSION).enqueue(new Callback<PhotoRoot>() {
             @Override
             public void onResponse(Call<PhotoRoot> call, Response<PhotoRoot> response) {
-                adapter.setData(response.body().getResponse().getItems());
-                Log.d(TAG, "PHOTO_GOOD_RESPONSE: " + response.body());
-                refresh.setRefreshing(false);
+                if (response.body().getResponse() != null) {
+                    adapter.setData(response.body().getResponse().getItems());
+                    Log.d(TAG, "PHOTO_GOOD_RESPONSE: " + response.body());
+                    refresh.setRefreshing(false);
+                }else Log.d(TAG, "<<RESPONSE IS NULL>>(dataInsert)");
             }
 
             @Override
@@ -74,23 +89,42 @@ public class FotoFragment extends Fragment {
             }
         });
     }
-
-    public class AdapterLoadMoreItems implements LoadMorePhotos{
-
+    //this class needed for realisation loading method
+    public class AdapterLoadMoreItems implements additionalFunctions {
+        //loading next photos
         @Override
         public void loadPhotos() {
-            vk.getAllPhotos(adapter.packageUrls.size(),App.ACCESS_TOKEN,App.VERSION).enqueue(new Callback<PhotoRoot>() {
+            int offsetPhotos = adapter.packageUrls.size()*2;
+            Log.d(TAG, "loadPhotos: PACKAGE URL SIZE" + adapter.packageUrls.size());
+            vk.getAllPhotos(offsetPhotos,photosCount, VKAccessToken.currentToken().accessToken,BuildConfig.VERSION).enqueue(new Callback<PhotoRoot>() {
                 @Override
                 public void onResponse(Call<PhotoRoot> call, Response<PhotoRoot> response) {
-                    adapter.loadMore(response.body().getResponse().getItems());
-                    Log.d(TAG, "LOADING_SUCCESS : " + response.body());
+                    if (response.body().getResponse() != null) {
+                        adapter.loadMore(response.body().getResponse().getItems());
+                        Log.d(TAG, "LOADING_SUCCESS : " + response.body());
+                    }else Log.d(TAG, "<<RESPONSE IS NULL>>(loadPhotos)");
                 }
 
                 @Override
                 public void onFailure(Call<PhotoRoot> call, Throwable t) {
-
+                    Log.d(TAG, "LOADING_FAIL: " + t.getMessage());
                 }
             });
         }
+
+        @Override
+        public void moreInfoAboutPhoto(String image1, String image2) {
+            InfoPhotoFragment dialog = new InfoPhotoFragment();
+            dialog.imageUrl = image1;
+            dialog.show(getActivity().getSupportFragmentManager(),"TAG");
+        }
+
+        @Override
+        public void moreInfoAboutPhoto(String bigImage) {
+            InfoPhotoFragment dialog = new InfoPhotoFragment();
+            dialog.imageUrl = bigImage;
+            dialog.show(getActivity().getSupportFragmentManager(),"TAG");
+        }
+
     }
 }

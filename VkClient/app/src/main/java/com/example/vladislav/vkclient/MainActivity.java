@@ -1,28 +1,34 @@
 package com.example.vladislav.vkclient;
 
 import android.content.Intent;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.vladislav.vkclient.Adapters.ViewPagerAdapter;
+import com.example.vladislav.vkclient.Fragments.FotoFragment;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKAccessTokenTracker;
 import com.vk.sdk.VKSdk;
-import com.vk.sdk.api.VKApi;
-import com.vk.sdk.api.VKRequest;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     ViewPager pager;
+    ViewPagerAdapter adapter;
     TabLayout tab;
     private static final String TAG = "MainActivity";
     Button btn;
     Toolbar toolbar;
+    FloatingActionButton fab;
+    AppBarLayout appBarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +45,29 @@ public class MainActivity extends AppCompatActivity {
                 logIn();
             }
         });
+        fab = findViewById(R.id.fab);
+        fab.hide();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int returnPosition = 1;
+                appBarLayout.setExpanded(true);
+                getFotoFragment().getRecycler().smoothScrollToPosition(returnPosition);
+            }
+        });
+        appBarLayout = findViewById(R.id.appBar);
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (verticalOffset == 0) fab.hide();
+                else fab.show();
+            }
+        });
     }
 
     private void initFragments() {
         pager = findViewById(R.id.pager);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
         tab = findViewById(R.id.tab);
         pager.setAdapter(adapter);
         tab.setupWithViewPager(pager);
@@ -70,5 +94,10 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, SignInActivity.class);
             startActivity(intent);
         }else initFragments();
+    }
+
+    private FotoFragment getFotoFragment() {
+        FotoFragment fragment = (FotoFragment) adapter.getCurrentFragment();
+        return fragment;
     }
 }
