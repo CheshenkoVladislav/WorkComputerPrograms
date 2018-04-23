@@ -24,6 +24,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public List<UrlsForRecycleItem> packageUrls = new ArrayList<>();
     private additionalFunctions additionalFunctions;
     private static final String TAG = "RecyclerViewAdapter";
+
     //set realisation interface additionalFunctions
     public void setAdditionalFunctions(additionalFunctions additionalFunctions) {
         this.additionalFunctions = additionalFunctions;
@@ -39,17 +40,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull FotoItemsViewHolder holder, int position) {
         holder.applyData(position);
-//        if (packageUrls.get(position).getUrl2() != null) {
-//            holder.applyData(position);
-//        } else {
-//            holder.applyData(position);
-//        }
         if (position == packageUrls.size() - 4) {
             Log.d(TAG, "onBindViewHolder: LAST HOLDER");
             additionalFunctions.loadPhotos();
         }
-
-
     }
 
     @Override
@@ -86,22 +80,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private void packUrlsInRecycleItem(List<String> imageUrls, List<String> bigImageUrls) {
         Log.d(TAG, "packUrlsInRecycleItem: START CYCLE");
         Log.d(TAG, "packUrlsInRecycleItem: " + imageUrls.size());
-        for (int i = 0; i < imageUrls.size(); i += 2) {
+        for (int i = 0; i < imageUrls.size(); i++) {
             UrlsForRecycleItem photo = new UrlsForRecycleItem();
             photo.setUrl1(imageUrls.get(i));
             photo.setBigUrl1(bigImageUrls.get(i));
-//            if (i == imageUrls.size() || i + 1 == imageUrls.size()) {
-//                photo.setUrl1(imageUrls.get(i));
-//                photo.setBigUrl1(bigImageUrls.get(i));
-//                Log.d(TAG, "packUrlsInRecycleItem: " + photo.getUrl1());
-//            } else {
-//                photo.setUrl1(imageUrls.get(i));
-//                photo.setBigUrl1(bigImageUrls.get(i));
-//                Log.d(TAG, "packUrlsInRecycleItem: " + photo.getUrl1());
-//                photo.setUrl2(imageUrls.get(i + 1));
-//                photo.setBigUrl2(bigImageUrls.get(i+1));
-//                Log.d(TAG, "packUrlsInRecycleItem: " + photo.getUrl2());
-//            }
             packageUrls.add(photo);
         }
         Log.d(TAG, "packUrlsInRecycleItem: " + packageUrls.size());
@@ -134,20 +116,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     .load(packageUrls.get(position).getUrl1())
                     .transform(new CropSquareTransform())
                     .into(this.image1);
-            infoPhoto(position);
+            infoPhoto(packageUrls, position);
         }
 
-        //        private void applyData(int position) {
-//            Picasso.get().load(image).into(this.image1);
-//            infoPhoto(bigImage1);
-//        }
         //onClick at photo handler
-        void infoPhoto(final int position) {
+        void infoPhoto(final List<UrlsForRecycleItem>bigImageUrls, final int position) {
             this.image1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "CLICK : image1 " + position);
-                    additionalFunctions.moreInfoAboutPhoto(packageUrls.get(position).getBigUrl1());
+                    additionalFunctions.moreInfoAboutPhoto(bigImageUrls,position);
                 }
             });
         }

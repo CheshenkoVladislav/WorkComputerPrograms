@@ -1,7 +1,8 @@
-package com.example.vladislav.vkclient;
+package com.example.vladislav.vkclient.helper;
 
 import android.app.Application;
 
+import com.example.vladislav.vkclient.BuildConfig;
 import com.example.vladislav.vkclient.Interfaces.Vk;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

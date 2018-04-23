@@ -1,8 +1,11 @@
 package com.example.vladislav.vkclient.Interfaces;
 
+import com.example.vladislav.vkclient.Data.UrlsForRecycleItem;
+
+import java.util.List;
+
 public interface additionalFunctions {
     void loadPhotos();
 
-    void moreInfoAboutPhoto(String image1,String image2);
-    void moreInfoAboutPhoto(String image1);
+    void moreInfoAboutPhoto(List<UrlsForRecycleItem>urlsForRecycleItems, int position);
 }
