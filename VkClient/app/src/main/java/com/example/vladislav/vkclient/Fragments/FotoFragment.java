@@ -1,5 +1,6 @@
 package com.example.vladislav.vkclient.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,12 +16,14 @@ import com.example.vladislav.vkclient.Adapters.RecyclerViewAdapter;
 import com.example.vladislav.vkclient.BuildConfig;
 import com.example.vladislav.vkclient.Data.UrlsForRecycleItem;
 import com.example.vladislav.vkclient.Interfaces.additionalFunctions;
+import com.example.vladislav.vkclient.MoreInfoActivity;
 import com.example.vladislav.vkclient.helper.App;
 import com.example.vladislav.vkclient.Data.Photo.PhotoRoot;
 import com.example.vladislav.vkclient.Interfaces.Vk;
 import com.example.vladislav.vkclient.R;
 import com.vk.sdk.VKAccessToken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -32,15 +35,13 @@ public class FotoFragment extends Fragment {
 
     private RecyclerView recycler;
     public RecyclerView getRecycler() {return recycler;}
-
     private SwipeRefreshLayout refresh;
     private RecyclerViewAdapter adapter = new RecyclerViewAdapter();
-
     private Vk vk;
-    private int photosCount = 40;
     private String TYPE = "foto";
     private static final String TAG = "FotoFragment";
     public static String IMAGE_URL_KEY = "imageUrl";
+    private int photosCount = 40;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -90,8 +91,8 @@ public class FotoFragment extends Fragment {
         //loading next photos
         @Override
         public void loadPhotos() {
-            int offsetPhotos = adapter.packageUrls.size();
-            Log.d(TAG, "loadPhotos: PACKAGE URL SIZE" + adapter.packageUrls.size());
+            int offsetPhotos = adapter.imageUrls.size();
+            Log.d(TAG, "loadPhotos: PACKAGE URL SIZE" + adapter.imageUrls.size());
             vk.getAllPhotos(offsetPhotos,photosCount, VKAccessToken.currentToken().accessToken,BuildConfig.VERSION).enqueue(new Callback<PhotoRoot>() {
                 @Override
                 public void onResponse(Call<PhotoRoot> call, Response<PhotoRoot> response) {
@@ -109,12 +110,12 @@ public class FotoFragment extends Fragment {
         }
 
         @Override
-        public void moreInfoAboutPhoto(List<UrlsForRecycleItem>bigImageUrls,int position) {
-            SliderShowFragment dialog = new SliderShowFragment();
-            dialog.imageUrls = bigImageUrls;
-            dialog.positon = position;
-            dialog.show(getActivity().getSupportFragmentManager(),"TAG");
+        public void moreInfoAboutPhoto(List<String>bigImageUrls,int position) {
+            Intent intent = new Intent(getActivity(), MoreInfoActivity.class);
+            intent.putStringArrayListExtra("IMAGE_URLS", (ArrayList<String>) adapter.imageUrls);
+            intent.putExtra("IMAGE_POSITION",position);
+            Log.d(TAG, "IMAGE_URLS_SIZE_BEFORE_SENT : " + adapter.imageUrls.size());
+            startActivity(intent);
         }
-
     }
 }

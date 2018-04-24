@@ -7,5 +7,5 @@ import java.util.List;
 public interface additionalFunctions {
     void loadPhotos();
 
-    void moreInfoAboutPhoto(List<UrlsForRecycleItem>urlsForRecycleItems, int position);
+    void moreInfoAboutPhoto(List<String>bigImageUrl,int position);
 }

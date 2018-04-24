@@ -1,5 +1,6 @@
 package com.example.vladislav.vkclient.Adapters;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -40,7 +41,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull FotoItemsViewHolder holder, int position) {
         holder.applyData(position);
-        if (position == packageUrls.size() - 4) {
+        if (position == imageUrls.size() - 4) {
             Log.d(TAG, "onBindViewHolder: LAST HOLDER");
             additionalFunctions.loadPhotos();
         }
@@ -48,30 +49,30 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return packageUrls.size();
+        return imageUrls.size();
     }
 
     public void setData(List<PhotoItems> photoItems) {
         if (packageUrls.size() != 0) {
             Log.d(TAG, "before remove items: " + packageUrls.size());
-            packageUrls.clear();
-            imageUrls.clear();
-            bigImageUrls.clear();
+//            packageUrls.clear();
+//            imageUrls.clear();
+//            bigImageUrls.clear();
         }
         Log.d(TAG, "after remove items: " + packageUrls.size());
         catchingUrls(photoItems);
-        packUrlsInRecycleItem(imageUrls, bigImageUrls);
+//        packUrlsInRecycleItem(imageUrls, bigImageUrls);
         notifyDataSetChanged();
         Log.d(TAG, "IMAGE URLS: " + imageUrls);
         Log.d(TAG, "BIG IMAGE URLS: " + bigImageUrls);
     }
 
     public void loadMore(List<PhotoItems> newItems) {
-        imageUrls.clear();
-        bigImageUrls.clear();
+//        imageUrls.clear();
+//        bigImageUrls.clear();
         Log.d(TAG, "loadMore: " + imageUrls.size());
         catchingUrls(newItems);
-        packUrlsInRecycleItem(imageUrls, bigImageUrls);
+//        packUrlsInRecycleItem(imageUrls, bigImageUrls);
         notifyDataSetChanged();
     }
 
@@ -113,18 +114,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         private void applyData(int position) {
             Picasso.get()
-                    .load(packageUrls.get(position).getUrl1())
+                    .load(imageUrls.get(position))
                     .transform(new CropSquareTransform())
                     .into(this.image1);
-            infoPhoto(packageUrls, position);
+            infoPhoto(position);
         }
 
         //onClick at photo handler
-        void infoPhoto(final List<UrlsForRecycleItem>bigImageUrls, final int position) {
+        void infoPhoto(final int position) {
             this.image1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "CLICK : image1 " + position);
                     additionalFunctions.moreInfoAboutPhoto(bigImageUrls,position);
                 }
             });
