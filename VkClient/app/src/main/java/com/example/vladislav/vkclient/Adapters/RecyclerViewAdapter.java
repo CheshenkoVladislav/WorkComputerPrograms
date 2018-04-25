@@ -73,7 +73,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Log.d(TAG, "loadMore: " + imageUrls.size());
         catchingUrls(newItems);
 //        packUrlsInRecycleItem(imageUrls, bigImageUrls);
-        notifyDataSetChanged();
+//        notifyDataSetChanged();
     }
 
     //package to class recycleViewItem
@@ -94,6 +94,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private void catchingUrls(List<PhotoItems> photoItems) {
         for (int i = 0; i < photoItems.size(); i++) {
             imageUrls.add(photoItems.get(i).getPhoto_604());
+            notifyItemChanged(imageUrls.size()-1);
             if (photoItems.get(i).getPhoto_1280() != null)
                 bigImageUrls.add(photoItems.get(i).getPhoto_1280());
             else if (photoItems.get(i).getPhoto_807() != null)

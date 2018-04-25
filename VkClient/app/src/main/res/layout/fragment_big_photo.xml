@@ -1,12 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@android:color/black"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".BigPhotoFragment">
+    <Button
+        android:id="@+id/commentBtn"
+        android:background="@drawable/comment_white_24dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/bigImage"
+        app:layout_constraintEnd_toEndOf="@+id/bigImage" />
+    <Button
+        android:id="@+id/repostBtn"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/repost_white_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/bigImage"
+        app:layout_constraintEnd_toStartOf="@+id/commentBtn" />
     <ImageView
         android:id="@+id/bigImage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="559dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+</android.support.constraint.ConstraintLayout>

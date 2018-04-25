@@ -49,7 +49,7 @@ public class MoreInfoActivity extends AppCompatActivity {
                              }
                          });
 
-        pager.setCurrentItem(position, false);
+        pager.setCurrentItem(position, true);
         pager.setAdapter(adapter);
         pager.setCurrentItem(position);
     }
