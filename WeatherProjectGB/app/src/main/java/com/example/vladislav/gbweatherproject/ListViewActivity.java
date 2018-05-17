@@ -26,11 +26,13 @@ public class ListViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listview);
         setDataForListView();
-        initAdapterForListView();
         initListView();
     }
     private void initListView() {
         listView = findViewById(R.id.listView);
+        adapter = new ArrayAdapter<>(this,
+                R.layout.item_listview, listViewData);
+        listView.setAdapter(adapter);
         //Слушатель кликов по итемам
         listView.setOnItemClickListener((parent, view, position, id) -> {
             showPopupMenu(view); });
@@ -40,7 +42,7 @@ public class ListViewActivity extends AppCompatActivity {
         listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-                mode.finish();
+                Log.d(TAG, "onItemCheckedStateChanged: ");
             }
 
             @Override
@@ -118,11 +120,6 @@ public class ListViewActivity extends AppCompatActivity {
         listViewData.add("ITEM_1");
         listViewData.add("ITEM_1");
         listViewData.add("ITEM_1");
-    }
-
-    private void initAdapterForListView() {
-        adapter = new ArrayAdapter<>(this,
-                R.layout.item_listview, listViewData);
     }
 
     private void addItem() {
