@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">GBWeatherProject</string>
+    <string name="actionBtnThree">action3</string>
+    <string name="actionBtnTwo">action2</string>
+    <string name="actionBtnOne">action1</string>
+    <string name="popupaction1">popupAction1</string>
+    <string name="popupaction2">popupaction2</string>
+    <string name="contextmenuItem1">thisContextMenu</string>
+    <string name="action1">action1</string>
+    <string name="anyaction">anyAction</string>
+</resources>
