@@ -6,7 +6,13 @@ import android.widget.ImageView;
 
 public class Door{
     private static final String TAG = "Door";
+
     private ImageView door;
+    public ImageView getDoor() {return door;}
+
+    private boolean opened;
+    public boolean isOpened() {return opened;}
+    public void setOpened(boolean opened) {this.opened = opened;}
 
     private boolean selected;
     public void setSelected(boolean selected) { this.selected = selected; }
@@ -14,6 +20,7 @@ public class Door{
 
     private int content;
     public int getContent() { return content; }
+
     Door(ImageView door, int content){
         this.door = door;
         this.door.setImageResource(R.drawable.door_clise);
