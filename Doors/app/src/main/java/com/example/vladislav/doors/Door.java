@@ -1,11 +1,11 @@
 package com.example.vladislav.doors;
 
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 
 public class Door{
     private static final String TAG = "Door";
+
+    private int number;
 
     private ImageView door;
     public ImageView getDoor() {return door;}
@@ -21,14 +21,35 @@ public class Door{
     private int content;
     public int getContent() { return content; }
 
-    Door(ImageView door, int content){
+    private SelectListener listener;
+
+    Door(ImageView door, int content, int number) {
         this.door = door;
         this.door.setImageResource(R.drawable.door_clise);
         this.content = content;
+        this.number = number;
     }
+
+    public void registerListener(SelectListener listener) {
+        this.listener = listener;
+    }
+
+    public void startListen() {
+        door.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onSelected(number);
+            }
+        });
+    }
+
     public void open(){
         if (content != 1)
             door.setImageResource(R.drawable.door_with_sheep);
         else door.setImageResource(R.drawable.door_with_car);
+        opened = true;
+    }
+
+    public interface SelectListener {
+        void onSelected(int number);
     }
 }

@@ -1,40 +1,39 @@
 package com.example.vladislav.doors;
 
-import android.app.FragmentManager;
 import android.util.Log;
 
-public class SelectDoor implements Selector {
-    private Door door1;
-    private Door door2;
-    private Door door3;
+public class SelectDoor {
     private Door [] doors;
-    private Door openedDoor;
     private static final String TAG = "SelectDoor";
 
-    SelectDoor(Door door1, Door door2, Door door3){
-        this.door1 = door1;
-        this.door2 = door2;
-        this.door3 = door3;
-        doors = new Door[] {door1,door2,door3};
-    }
-    @Override
-    public Door selectFirstDoor() {
-        if (door1.getContent() != 1 && !door1.isSelected() && !door1.isOpened()) {
-            return door1;
-        } else if (door2.getContent() != 1 && !door2.isSelected() && !door2.isOpened()) {
-            return door2;
-        } else if (door3.getContent() != 1 && !door3.isSelected() && !door3.isOpened()) {
-            return door3;
-        } else return selectScndDoor();
+    SelectDoor(Door[] doors) {
+        this.doors = doors;
     }
 
-    @Override
-    public Door selectScndDoor() {
-        Log.d(TAG, "selectScndDoor: ");
+    public Door selectDoor() {
         for (Door door : doors) {
-            if (!door.isOpened() && door.isSelected() && door.getContent() != 1) {
-                return door3;
+            if (door.getContent() != 1 && !door.isSelected() && !door.isOpened()) {
+                Log.d(TAG, "selectDoor: " + door.getDoor());
+                return door;
             }
+        }
+        return null;
+
+    }
+
+    public Door selectScndDoor() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        for (Door door : doors) {
+            if (!door.isSelected() && !door.isOpened()) {
+                return door;
+            }
+        }
+        for (Door door : doors) {
+            if (!door.isOpened()) return door;
         }
         return null;
     }
