@@ -4,8 +4,12 @@ import android.util.Log;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * этот класс распределяет овец и автомобиль по дверям
+ */
 public class Distributor{
     private static final String TAG = "Distributor";
+
     public int[] itemsDistribution() {
         int d1;
         int d2;
@@ -27,6 +31,7 @@ public class Distributor{
                 "d3 = " + d3);
         return new int[]{d1, d2, d3};
     }
+
     private int randomNum(int max, int min) {
         return ThreadLocalRandom.current().nextInt(min, max + 1);
     }

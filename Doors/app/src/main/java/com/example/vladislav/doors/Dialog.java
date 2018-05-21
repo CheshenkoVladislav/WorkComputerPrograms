@@ -26,7 +26,11 @@ public class Dialog extends DialogFragment {
                     Log.d(TAG, "YES");
                     dismiss();
                 })
-                .setNegativeButton("Нет", (dialog12, which) -> Log.d(TAG, "NO"))
+                .setNegativeButton("Нет", (dialog12, which) -> {
+                    Log.d(TAG, "NO");
+                    ((MainActivity) Objects.requireNonNull(getActivity())).newThredComand();
+                    dismiss();
+                })
                 .create();
     }
 

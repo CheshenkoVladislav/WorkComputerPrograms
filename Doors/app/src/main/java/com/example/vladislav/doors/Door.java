@@ -16,7 +16,10 @@ public class Door{
 
     private boolean selected;
     public void setSelected(boolean selected) { this.selected = selected; }
-    public boolean isSelected() { return selected; }
+
+    public boolean isSelected() {
+        return !selected;
+    }
 
     private int content;
     public int getContent() { return content; }

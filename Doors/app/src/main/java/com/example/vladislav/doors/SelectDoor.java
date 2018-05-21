@@ -10,9 +10,10 @@ public class SelectDoor {
         this.doors = doors;
     }
 
+    // выбирает первую дверь
     public Door selectDoor() {
         for (Door door : doors) {
-            if (door.getContent() != 1 && !door.isSelected() && !door.isOpened()) {
+            if (door.getContent() != 1 && door.isSelected() && !door.isOpened()) {
                 Log.d(TAG, "selectDoor: " + door.getDoor());
                 return door;
             }
@@ -21,14 +22,11 @@ public class SelectDoor {
 
     }
 
+    //выбирает дверь после подтверждения выбора, нету больше не выбранных дверей,
+    // то открываем выбранную
     public Door selectScndDoor() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         for (Door door : doors) {
-            if (!door.isSelected() && !door.isOpened()) {
+            if (door.isSelected() && !door.isOpened()) {
                 return door;
             }
         }

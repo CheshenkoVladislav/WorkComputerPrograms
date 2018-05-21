@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Doors</string>
+    <string name="ActivityTitle">Выберите дверь</string>
+    <string name="door">door</string>
 </resources>
