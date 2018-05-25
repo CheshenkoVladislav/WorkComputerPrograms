@@ -4,20 +4,6 @@
 
     <item
         android:id="@+id/addItem"
-        android:icon="@drawable/ic_any_action_24dp"
         android:title="@string/actionBtnOne"
-        app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/checkbox1"
-        android:title="@string/actionBtnTwo"
-        app:showAsAction="never"
-        android:checkable="true"/>
-
-    <item
-        android:id="@+id/checkbox2"
-        android:title="@string/actionBtnThree"
-        app:showAsAction="never"
-        android:checkable="true"/>
-
+        app:showAsAction="ifRoom"/>
 </menu>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title="@string/anyaction"
-        android:icon="@drawable/ic_any_action_24dp"/>
+        android:icon="@drawable/ic_any_action_24dp"
+        android:title="@string/anyaction" />
 </menu>
