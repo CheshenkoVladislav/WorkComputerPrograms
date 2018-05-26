@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.vladislav.gbweatherproject.Data.Response;
 import com.example.vladislav.gbweatherproject.Data.WeatherDataLoader;
 import com.example.vladislav.gbweatherproject.Data.WeatherItem;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +31,10 @@ public class WeatherActivity extends AppCompatActivity {
         setContentView(R.layout.activity_weather);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        initUI();
+    }
+
+    private void initUI() {
         if (getIntent().getStringExtra(SearchCityDialog.CITY_KEY) != null){
             String city = getIntent().getStringExtra(SearchCityDialog.CITY_KEY);
             renderJsonObj(city);
@@ -53,28 +59,39 @@ public class WeatherActivity extends AppCompatActivity {
     }
     @SuppressLint("HandlerLeak")
     private void renderJsonObj(String city){
+        TextView tempTv = findViewById(R.id.temperature_tv);
+        TextView cityTv = findViewById(R.id.city_tv);
+        TextView weatherTv = findViewById(R.id.status_tv);
+        ImageView imageView = findViewById(R.id.icon_weather);
+
         Handler handler = new Handler(){
+        @SuppressLint("SetTextI18n")
         @Override
          public void handleMessage(Message msg) {
-         TextView temp = findViewById(R.id.temperature_tv);
-         TextView city = findViewById(R.id.city_tv);
-         TextView weather = findViewById(R.id.status_tv);
-
-         Bundle bundle = msg.getData();
-         temp.setText((int)((Response)bundle.getSerializable(KEY_WEATHER)).getMain().getTemp());
-//         city.setText(bundle.getString(KEY_CITY));
-//         weather.setText(bundle.getString(KEY_WEATHER));
+            Bundle bundle = msg.getData();
+            Response response = (Response) bundle.getSerializable(KEY_WEATHER);
+            tempTv.setText(String.valueOf(response.getMain().getTemp()) + " °C");
+            cityTv.setText(response.getName());
+            weatherTv.setText(response.getWeather().get(0).getDescription());
+            downloadImage(imageView,response.getWeather().get(0).getIcon());
+            System.out.println(response.getWeather().get(0).getIcon());
         }};
         new Thread(){
             @Override
             public void run() {
-                Response response = WeatherDataLoader.getJsonResponse(city);
+                System.out.println(WeatherDataLoader.getJsonResponse(city).getId());
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(KEY_WEATHER,response);
+                bundle.putSerializable(KEY_WEATHER,WeatherDataLoader.getJsonResponse(city));
                 Message message = new Message();
                 message.setData(bundle);
                 handler.sendMessage(message);
             }
         }.start();
+    }
+
+    private void downloadImage(ImageView imageView,String imageId) {
+        Picasso.get()
+                .load(String.format("http://openweathermap.org/img/w/%s.png",imageId))
+                .into(imageView);
     }
 }
