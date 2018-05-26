@@ -2,8 +2,10 @@ package com.example.vladislav.gbweatherproject.Data;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 
-public class WeatherItem{
+
+public class WeatherItem {
 
 	@SerializedName("icon")
 	private String icon;

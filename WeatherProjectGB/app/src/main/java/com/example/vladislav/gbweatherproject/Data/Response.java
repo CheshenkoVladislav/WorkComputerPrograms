@@ -1,9 +1,10 @@
 package com.example.vladislav.gbweatherproject.Data;
 
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
-public class Response{
+public class Response implements Serializable{
 
 	@SerializedName("dt")
 	private int dt;
