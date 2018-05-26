@@ -20,6 +20,8 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 public class WeatherActivity extends AppCompatActivity {
 
     private static final String search_dialog = "search_dialog";
@@ -65,14 +67,11 @@ public class WeatherActivity extends AppCompatActivity {
         ImageView imageView = findViewById(R.id.icon_weather);
 
         Handler handler = new Handler(){
-        @SuppressLint("SetTextI18n")
         @Override
          public void handleMessage(Message msg) {
             Bundle bundle = msg.getData();
             Response response = (Response) bundle.getSerializable(KEY_WEATHER);
-            tempTv.setText(String.valueOf(response.getMain().getTemp()) + " °C");
-            cityTv.setText(response.getName());
-            weatherTv.setText(response.getWeather().get(0).getDescription());
+            setTextView(Objects.requireNonNull(response), tempTv, cityTv, weatherTv);
             downloadImage(imageView,response.getWeather().get(0).getIcon());
             System.out.println(response.getWeather().get(0).getIcon());
         }};
@@ -87,6 +86,13 @@ public class WeatherActivity extends AppCompatActivity {
                 handler.sendMessage(message);
             }
         }.start();
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setTextView(Response response, TextView tempTv, TextView cityTv, TextView weatherTv) {
+        tempTv.setText(String.valueOf(response.getMain().getTemp()) + " °C");
+        cityTv.setText(response.getName());
+        weatherTv.setText(response.getWeather().get(0).getDescription());
     }
 
     private void downloadImage(ImageView imageView,String imageId) {
