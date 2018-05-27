@@ -1,10 +1,14 @@
 package com.example.vladislav.gbweatherproject;
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -17,12 +21,24 @@ import com.example.vladislav.gbweatherproject.Data.Response;
 import com.example.vladislav.gbweatherproject.Data.WeatherDataLoader;
 import com.squareup.picasso.Picasso;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.Objects;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class WeatherActivity extends AppCompatActivity {
+public class WeatherActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener{
     private static final String search_dialog = "search_dialog";
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -34,14 +50,19 @@ public class WeatherActivity extends AppCompatActivity {
     TextView weatherTv;
     @BindView(R.id.icon_weather)
     ImageView imageView;
-    private String KEY_WEATHER = "status";
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
     private String city;
     private String PREFS_NAME = "saveState";
+    private String KEY = "B2fdgsdgi3bgn283";
+    private String KEY_WEATHER = "status";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_weather);
+        setContentView(R.layout.activity_main);
         initUI();
     }
     @Override
@@ -52,7 +73,21 @@ public class WeatherActivity extends AppCompatActivity {
     private void initUI() {
         ButterKnife.bind(this);
         initToolbar();
+        initDrawer();
+        initNavView();
         getCurrentCityWeather();
+    }
+
+    private void initNavView() {
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void initDrawer() {
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
     }
     private void getCurrentCityWeather() {
         if (getIntent().getStringExtra(SearchCityDialog.CITY_KEY) != null) {
@@ -65,11 +100,12 @@ public class WeatherActivity extends AppCompatActivity {
         }
     }
     private void saveState() {
-            getSharedPreferences(PREFS_NAME,MODE_PRIVATE)
-                    .edit()
-                    .putString(SearchCityDialog.CITY_KEY,city)
-                    .apply();
+        getSharedPreferences(PREFS_NAME,MODE_PRIVATE)
+                .edit()
+                .putString(SearchCityDialog.CITY_KEY,city)
+                .apply();
     }
+
     private String getState() {
         return getSharedPreferences(PREFS_NAME,MODE_PRIVATE)
                 .getString(SearchCityDialog.CITY_KEY,null);
@@ -126,5 +162,19 @@ public class WeatherActivity extends AppCompatActivity {
         tempTv.setText(String.valueOf(response.getMain().getTemp()) + " °C");
         cityTv.setText(response.getName());
         weatherTv.setText(response.getWeather().get(0).getDescription());
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.nav_camera:
+            case R.id.nav_gallery:
+            case R.id.nav_manage:
+            case R.id.nav_send:
+            case R.id.nav_share:
+            case R.id.nav_slideshow:
+        }
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }
