@@ -5,5 +5,5 @@
     <item
         android:id="@+id/addItem"
         android:title="@string/actionBtnOne"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 </menu>
