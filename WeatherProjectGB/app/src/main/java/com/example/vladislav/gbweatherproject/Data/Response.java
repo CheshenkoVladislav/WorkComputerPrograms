@@ -8,7 +8,7 @@ import java.util.List;
 public class Response implements Serializable {
 
     @SerializedName("dt")
-    private int dt;
+    private double dt;
 
     @SerializedName("rain")
     private Rain rain;
@@ -23,7 +23,7 @@ public class Response implements Serializable {
     private String name;
 
     @SerializedName("cod")
-    private int cod;
+    private double cod;
 
     @SerializedName("main")
     private Main main;
@@ -40,7 +40,7 @@ public class Response implements Serializable {
     @SerializedName("wind")
     private Wind wind;
 
-    public int getDt() {
+    public double getDt() {
         return dt;
     }
 
@@ -80,7 +80,7 @@ public class Response implements Serializable {
         this.name = name;
     }
 
-    public int getCod() {
+    public double getCod() {
         return cod;
     }
 

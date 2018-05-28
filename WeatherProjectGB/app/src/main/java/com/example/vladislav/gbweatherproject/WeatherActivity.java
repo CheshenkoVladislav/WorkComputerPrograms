@@ -54,9 +54,9 @@ public class WeatherActivity extends AppCompatActivity
     DrawerLayout drawer;
     @BindView(R.id.nav_view)
     NavigationView navigationView;
-    private String city;
+    private String city ;
+    private Coder coder = new Coder();
     private String PREFS_NAME = "saveState";
-    private String KEY = "B2fdgsdgi3bgn283";
     private String KEY_WEATHER = "status";
 
     @Override
@@ -64,7 +64,7 @@ public class WeatherActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initUI();
-    }
+}
     @Override
     protected void onPause() {
         super.onPause();
@@ -90,27 +90,27 @@ public class WeatherActivity extends AppCompatActivity
         toggle.syncState();
     }
     private void getCurrentCityWeather() {
-        if (getIntent().getStringExtra(SearchCityDialog.CITY_KEY) != null) {
-            city = getIntent().getStringExtra(SearchCityDialog.CITY_KEY);
+        if (getIntent().getStringExtra(Coder.KEY_CITY) != null) {
+            city = getIntent().getStringExtra(Coder.KEY_CITY);
             renderJsonObj(city);
         }
         else if (!TextUtils.isEmpty(getState())){
-            city = getState();
+            city = coder.decryptCurrentState(getState());
             renderJsonObj(city);
         }
     }
     private void saveState() {
-        getSharedPreferences(PREFS_NAME,MODE_PRIVATE)
-                .edit()
-                .putString(SearchCityDialog.CITY_KEY,city)
-                .apply();
+        if (city != null) {
+            getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+                    .edit()
+                    .putString(Coder.KEY_CITY, coder.encryptState(city))
+                    .apply();
+        }
     }
-
     private String getState() {
         return getSharedPreferences(PREFS_NAME,MODE_PRIVATE)
-                .getString(SearchCityDialog.CITY_KEY,null);
+                .getString(Coder.KEY_CITY,null);
     }
-
     private void initToolbar() {
         setSupportActionBar(toolbar);
     }
@@ -142,8 +142,10 @@ public class WeatherActivity extends AppCompatActivity
             public void handleMessage(Message msg) {
                 Bundle bundle = msg.getData();
                 Response response = (Response) bundle.getSerializable(KEY_WEATHER);
-                setTextView(Objects.requireNonNull(response), tempTv, cityTv, weatherTv);
-                downloadImage(imageView, response.getWeather().get(0).getIcon());
+                if (response != null) {
+                    setTextView(Objects.requireNonNull(response), tempTv, cityTv, weatherTv);
+                    downloadImage(imageView, response.getWeather().get(0).getIcon());
+                }
             }
         };
         new Thread() {
@@ -154,6 +156,7 @@ public class WeatherActivity extends AppCompatActivity
                 Message message = new Message();
                 message.setData(bundle);
                 handler.sendMessage(message);
+                interrupt();
             }
         }.start();
     }

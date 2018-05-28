@@ -8,10 +8,10 @@ public class Sys {
     private String country;
 
     @SerializedName("sunrise")
-    private int sunrise;
+    private double sunrise;
 
     @SerializedName("sunset")
-    private int sunset;
+    private double sunset;
 
     public String getCountry() {
         return country;
@@ -21,7 +21,7 @@ public class Sys {
         this.country = country;
     }
 
-    public int getSunrise() {
+    public double getSunrise() {
         return sunrise;
     }
 
@@ -29,7 +29,7 @@ public class Sys {
         this.sunrise = sunrise;
     }
 
-    public int getSunset() {
+    public double getSunset() {
         return sunset;
     }
 

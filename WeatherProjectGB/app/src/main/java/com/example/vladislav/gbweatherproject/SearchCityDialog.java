@@ -11,9 +11,7 @@ import android.widget.EditText;
 import java.util.Objects;
 
 public class SearchCityDialog extends DialogFragment {
-    public static String CITY_KEY = "city";
-    EditText view;
-
+    private EditText view;
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -32,7 +30,7 @@ public class SearchCityDialog extends DialogFragment {
 
     private void setCityAndStartNewIntent(String city) {
         Intent intent = new Intent(getActivity(), WeatherActivity.class);
-        intent.putExtra(CITY_KEY, city);
+        intent.putExtra(Coder.KEY_CITY, city);
         startActivity(intent);
     }
 }

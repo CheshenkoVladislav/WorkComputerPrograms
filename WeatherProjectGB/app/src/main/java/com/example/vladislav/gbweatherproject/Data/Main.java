@@ -11,10 +11,10 @@ public class Main {
     private double tempMin;
 
     @SerializedName("humidity")
-    private int humidity;
+    private double humidity;
 
     @SerializedName("pressure")
-    private int pressure;
+    private double pressure;
 
     @SerializedName("temp_max")
     private double tempMax;
@@ -35,7 +35,7 @@ public class Main {
         this.tempMin = tempMin;
     }
 
-    public int getHumidity() {
+    public double getHumidity() {
         return humidity;
     }
 
@@ -43,7 +43,7 @@ public class Main {
         this.humidity = humidity;
     }
 
-    public int getPressure() {
+    public double getPressure() {
         return pressure;
     }
 

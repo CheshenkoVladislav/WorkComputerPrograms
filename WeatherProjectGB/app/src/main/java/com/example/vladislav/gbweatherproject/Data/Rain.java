@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName;
 public class Rain {
 
     @SerializedName("3h")
-    private int jsonMember3h;
+    private double jsonMember3h;
 
-    public int getJsonMember3h() {
+    public double getJsonMember3h() {
         return jsonMember3h;
     }
 
