@@ -56,8 +56,13 @@ public class WeatherActivity extends AppCompatActivity
     NavigationView navigationView;
     private String city ;
     private Coder coder = new Coder();
+
     private String PREFS_NAME = "saveState";
     private String KEY_WEATHER = "status";
+    private String KEY_CHECKBOX = "checkbotStatus";
+
+    private boolean checkbox1;
+    private boolean checkbox2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +82,18 @@ public class WeatherActivity extends AppCompatActivity
         initNavView();
         getCurrentCityWeather();
     }
-
+    private void initToolbar() {
+        setSupportActionBar(toolbar);
+    }
     private void initNavView() {
         navigationView.setNavigationItemSelectedListener(this);
+        loadAvatar();
     }
-
+    private void loadAvatar() {
+        Handler handler = new Handler();
+        handler.post(new Avatar(getApplicationContext(),
+                navigationView.getHeaderView(0).findViewById(R.id.imageView)));
+    }
     private void initDrawer() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,
                 R.string.navigation_drawer_open,
@@ -111,9 +123,6 @@ public class WeatherActivity extends AppCompatActivity
         return getSharedPreferences(PREFS_NAME,MODE_PRIVATE)
                 .getString(Coder.KEY_CITY,null);
     }
-    private void initToolbar() {
-        setSupportActionBar(toolbar);
-    }
 
     private void downloadImage(ImageView imageView, String imageId) {
         String IMAGE_URL = "http://openweathermap.org/img/w/%s.png";
@@ -128,8 +137,23 @@ public class WeatherActivity extends AppCompatActivity
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        showSearchDialog();
-        return true;
+        switch (item.getItemId()){
+            case R.id.addItem : {
+                showSearchDialog();
+                return true;
+            }
+            case R.id.variate1 : {
+                if (!item.isChecked()) item.setChecked(true);
+                else item.setChecked(false);
+                return true;
+            }
+            case R.id.variate2 : {
+                if (!item.isChecked()) item.setChecked(true);
+                else item.setChecked(false);
+                return true;
+            }
+        }
+        return false;
     }
     private void showSearchDialog() {
         SearchCityDialog dialog = new SearchCityDialog();
@@ -166,7 +190,6 @@ public class WeatherActivity extends AppCompatActivity
         cityTv.setText(response.getName());
         weatherTv.setText(response.getWeather().get(0).getDescription());
     }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
