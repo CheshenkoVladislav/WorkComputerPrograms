@@ -1,6 +1,7 @@
 package com.example.vladislav.gbweatherproject;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,18 +22,7 @@ import com.example.vladislav.gbweatherproject.Data.Response;
 import com.example.vladislav.gbweatherproject.Data.WeatherDataLoader;
 import com.squareup.picasso.Picasso;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 import java.util.Objects;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,10 +49,11 @@ public class WeatherActivity extends AppCompatActivity
 
     private String PREFS_NAME = "saveState";
     private String KEY_WEATHER = "status";
-    private String KEY_CHECKBOX = "checkbotStatus";
+    private String KEY_CHECKBOX1 = "checkbotStatus1";
+    private String KEY_CHECKBOX2 = "checkbotStatus2";
 
-    private boolean checkbox1;
-    private boolean checkbox2;
+    private boolean checkbox1 = false;
+    private boolean checkbox2 = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +71,7 @@ public class WeatherActivity extends AppCompatActivity
         initToolbar();
         initDrawer();
         initNavView();
-        getCurrentCityWeather();
+        getCurrentState();
     }
     private void initToolbar() {
         setSupportActionBar(toolbar);
@@ -101,27 +92,36 @@ public class WeatherActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
     }
-    private void getCurrentCityWeather() {
+    private void getCurrentState() {
         if (getIntent().getStringExtra(Coder.KEY_CITY) != null) {
             city = getIntent().getStringExtra(Coder.KEY_CITY);
+            getSavedCity();
             renderJsonObj(city);
         }
-        else if (!TextUtils.isEmpty(getState())){
-            city = coder.decryptCurrentState(getState());
+        else if (!TextUtils.isEmpty(getSavedCity())){
+            city = coder.decryptCurrentState(getSavedCity());
+            getSavedCity();
             renderJsonObj(city);
         }
     }
     private void saveState() {
         if (city != null) {
-            getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+            getSharedPreferences()
                     .edit()
                     .putString(Coder.KEY_CITY, coder.encryptState(city))
+                    .putBoolean(KEY_CHECKBOX1,checkbox1)
+                    .putBoolean(KEY_CHECKBOX2,checkbox2)
                     .apply();
         }
     }
-    private String getState() {
-        return getSharedPreferences(PREFS_NAME,MODE_PRIVATE)
+    private String getSavedCity() {
+        return getSharedPreferences()
                 .getString(Coder.KEY_CITY,null);
+    }
+
+    private void initSavedCheckbox(){
+        checkbox1 = getSharedPreferences().getBoolean(KEY_CHECKBOX1,false);
+        checkbox2 = getSharedPreferences().getBoolean(KEY_CHECKBOX2,false);
     }
 
     private void downloadImage(ImageView imageView, String imageId) {
@@ -130,9 +130,13 @@ public class WeatherActivity extends AppCompatActivity
                 .load(String.format(IMAGE_URL, imageId))
                 .into(imageView);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.actionbar_menu, menu);
+        initSavedCheckbox();
+        menu.getItem(1).setChecked(checkbox1);
+        menu.getItem(2).setChecked(checkbox2);
         return true;
     }
     @Override
@@ -145,11 +149,13 @@ public class WeatherActivity extends AppCompatActivity
             case R.id.variate1 : {
                 if (!item.isChecked()) item.setChecked(true);
                 else item.setChecked(false);
+                checkbox1 = item.isChecked();
                 return true;
             }
             case R.id.variate2 : {
                 if (!item.isChecked()) item.setChecked(true);
                 else item.setChecked(false);
+                checkbox2 = item.isChecked();
                 return true;
             }
         }
@@ -202,5 +208,8 @@ public class WeatherActivity extends AppCompatActivity
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    private SharedPreferences getSharedPreferences() {
+        return getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
     }
 }
