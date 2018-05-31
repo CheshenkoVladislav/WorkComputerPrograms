@@ -12,6 +12,7 @@ import java.util.Objects;
 
 public class SearchCityDialog extends DialogFragment {
     private EditText view;
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

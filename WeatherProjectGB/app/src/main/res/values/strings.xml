@@ -3,14 +3,9 @@
     <string name="actionBtnThree">action3</string>
     <string name="actionBtnTwo">action2</string>
     <string name="actionBtnOne">Set city</string>
-    <string name="popupaction1">popupAction1</string>
-    <string name="popupaction2">popupaction2</string>
-    <string name="contextmenuItem1">thisContextMenu</string>
-    <string name="action1">action1</string>
-    <string name="anyaction">anyAction</string>
+
     <string name="head_of_nav_drawer">Разработчик</string>
     <string name="feed_back">Обратная связь</string>
-    <string name="title_activity_main2">Main2Activity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -25,8 +20,12 @@
     <string name="communicate_item">Communicate</string>
     <string name="share_item">Share</string>
     <string name="send_item">Send</string>
+
+    <!--TextViews-->
     <string name="city_tv_hint">City</string>
     <string name="temp_tv_hint">temp °C</string>
     <string name="weather_tv_hint">weather</string>
 
+    <!--toasts-->
+    <string name="external_storage_not_writtable">Can\'t access to external storage</string>
 </resources>

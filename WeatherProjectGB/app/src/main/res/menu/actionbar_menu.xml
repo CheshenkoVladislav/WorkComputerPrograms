@@ -6,4 +6,14 @@
         android:id="@+id/addItem"
         android:title="@string/actionBtnOne"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/variate1"
+        android:title="@string/actionBtnTwo"
+        android:checkable="true"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/variate2"
+        android:title="@string/actionBtnThree"
+        android:checkable="true"
+        app:showAsAction="never" />
 </menu>
