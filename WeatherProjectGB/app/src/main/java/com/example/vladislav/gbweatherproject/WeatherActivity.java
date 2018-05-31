@@ -18,8 +18,8 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.vladislav.gbweatherproject.DB.WeatherDataBaseConnector;
 import com.example.vladislav.gbweatherproject.Data.Response;
-import com.example.vladislav.gbweatherproject.Data.WeatherDataLoader;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
@@ -28,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class WeatherActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener {
     private static final String search_dialog = "search_dialog";
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -44,7 +44,7 @@ public class WeatherActivity extends AppCompatActivity
     DrawerLayout drawer;
     @BindView(R.id.nav_view)
     NavigationView navigationView;
-    private String city ;
+    private String city;
     private Coder coder = new Coder();
 
     private String PREFS_NAME = "saveState";
@@ -60,12 +60,14 @@ public class WeatherActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initUI();
-}
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
         saveState();
     }
+
     private void initUI() {
         ButterKnife.bind(this);
         initToolbar();
@@ -73,55 +75,61 @@ public class WeatherActivity extends AppCompatActivity
         initNavView();
         getCurrentState();
     }
+
     private void initToolbar() {
         setSupportActionBar(toolbar);
     }
+
     private void initNavView() {
         navigationView.setNavigationItemSelectedListener(this);
         loadAvatar();
     }
+
     private void loadAvatar() {
         Handler handler = new Handler();
         handler.post(new Avatar(getApplicationContext(),
                 navigationView.getHeaderView(0).findViewById(R.id.imageView)));
     }
+
     private void initDrawer() {
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
     }
+
     private void getCurrentState() {
         if (getIntent().getStringExtra(Coder.KEY_CITY) != null) {
             city = getIntent().getStringExtra(Coder.KEY_CITY);
             getSavedCity();
             renderJsonObj(city);
-        }
-        else if (!TextUtils.isEmpty(getSavedCity())){
+        } else if (!TextUtils.isEmpty(getSavedCity())) {
             city = coder.decryptCurrentState(getSavedCity());
             getSavedCity();
             renderJsonObj(city);
         }
     }
+
     private void saveState() {
         if (city != null) {
             getSharedPreferences()
                     .edit()
                     .putString(Coder.KEY_CITY, coder.encryptState(city))
-                    .putBoolean(KEY_CHECKBOX1,checkbox1)
-                    .putBoolean(KEY_CHECKBOX2,checkbox2)
+                    .putBoolean(KEY_CHECKBOX1, checkbox1)
+                    .putBoolean(KEY_CHECKBOX2, checkbox2)
                     .apply();
         }
     }
+
     private String getSavedCity() {
         return getSharedPreferences()
-                .getString(Coder.KEY_CITY,null);
+                .getString(Coder.KEY_CITY, null);
     }
 
-    private void initSavedCheckbox(){
-        checkbox1 = getSharedPreferences().getBoolean(KEY_CHECKBOX1,false);
-        checkbox2 = getSharedPreferences().getBoolean(KEY_CHECKBOX2,false);
+    private void initSavedCheckbox() {
+        checkbox1 = getSharedPreferences().getBoolean(KEY_CHECKBOX1, false);
+        checkbox2 = getSharedPreferences().getBoolean(KEY_CHECKBOX2, false);
     }
 
     private void downloadImage(ImageView imageView, String imageId) {
@@ -141,18 +149,18 @@ public class WeatherActivity extends AppCompatActivity
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.addItem : {
+        switch (item.getItemId()) {
+            case R.id.addItem: {
                 showSearchDialog();
                 return true;
             }
-            case R.id.variate1 : {
+            case R.id.variate1: {
                 if (!item.isChecked()) item.setChecked(true);
                 else item.setChecked(false);
                 checkbox1 = item.isChecked();
                 return true;
             }
-            case R.id.variate2 : {
+            case R.id.variate2: {
                 if (!item.isChecked()) item.setChecked(true);
                 else item.setChecked(false);
                 checkbox2 = item.isChecked();
@@ -161,10 +169,12 @@ public class WeatherActivity extends AppCompatActivity
         }
         return false;
     }
+
     private void showSearchDialog() {
         SearchCityDialog dialog = new SearchCityDialog();
         dialog.show(getSupportFragmentManager(), search_dialog);
     }
+
     @SuppressLint("HandlerLeak")
     private void renderJsonObj(String city) {
         Handler handler = new Handler() {
@@ -173,8 +183,7 @@ public class WeatherActivity extends AppCompatActivity
                 Bundle bundle = msg.getData();
                 Response response = (Response) bundle.getSerializable(KEY_WEATHER);
                 if (response != null) {
-                    setTextView(Objects.requireNonNull(response), tempTv, cityTv, weatherTv);
-                    downloadImage(imageView, response.getWeather().get(0).getIcon());
+                    setInputData(Objects.requireNonNull(response), tempTv, cityTv, weatherTv);
                 }
             }
         };
@@ -190,12 +199,26 @@ public class WeatherActivity extends AppCompatActivity
             }
         }.start();
     }
+
     @SuppressLint("SetTextI18n")
-    private void setTextView(Response response, TextView tempTv, TextView cityTv, TextView weatherTv) {
-        tempTv.setText(String.valueOf(response.getMain().getTemp()) + " °C");
-        cityTv.setText(response.getName());
-        weatherTv.setText(response.getWeather().get(0).getDescription());
+    private void setInputData(Response response, TextView tempTv, TextView cityTv, TextView weatherTv) {
+        String city = response.getName();
+        String description = response.getWeather().get(0).getDescription();
+        double temp = response.getMain().getTemp();
+        cityTv.setText(city);
+        weatherTv.setText(description);
+        tempTv.setText(String.valueOf(temp) + " °C");
+        downloadImage(imageView, response.getWeather().get(0).getIcon());
+        //Add to Data Base//
+        addToDataBase(city, description, temp);
     }
+
+    private void addToDataBase(String city, String description, double temp) {
+        WeatherDataBaseConnector connector = new WeatherDataBaseConnector(this);
+        connector.open();
+        connector.addWeather(city,description,temp);
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -209,7 +232,8 @@ public class WeatherActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     private SharedPreferences getSharedPreferences() {
-        return getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
+        return getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
     }
 }

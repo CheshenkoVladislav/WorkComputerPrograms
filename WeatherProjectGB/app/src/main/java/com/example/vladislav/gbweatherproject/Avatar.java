@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,12 +22,14 @@ public class Avatar extends Thread {
         this.context = context;
         this.imageView = imageView;
     }
+
     @Override
     public void run() {
         saveToInternalStorage();
         loadAvatar(context.getFilesDir());
         interrupt();
     }
+
     private void saveToInternalStorage() {
         File dir = context.getFilesDir();
         boolean ifFileDirExist = dir.exists() || dir.mkdirs();
@@ -34,6 +37,7 @@ public class Avatar extends Thread {
             saveBitmap(new File(dir, file_name));
         }
     }
+
     private void saveToExternalStorage() {
         File dir = context.getExternalFilesDir(Environment.DIRECTORY_DCIM);
         if (!isExternalStorageWrittable()) {
@@ -42,6 +46,7 @@ public class Avatar extends Thread {
         }
         saveBitmap(new File(dir, file_name));
     }
+
     private void saveBitmap(File file) {
         try {
             FileOutputStream outputStream = new FileOutputStream(file);
@@ -53,16 +58,20 @@ public class Avatar extends Thread {
             e.printStackTrace();
         }
     }
+
     private void showToast(String string) {
         Toast.makeText(context, string, Toast.LENGTH_SHORT).show();
     }
+
     private boolean isExternalStorageWrittable() {
         String state = Environment.getExternalStorageState();
         return !Environment.MEDIA_MOUNTED.equals(state);
     }
+
     private Bitmap getImageViewBitmap() {
         return ((BitmapDrawable) imageView.getDrawable()).getBitmap();
     }
+
     private void loadAvatar(File fileDir) {
         File avatar = new File(fileDir, file_name);
         if (avatar.exists()) {
