@@ -1,0 +1,29 @@
+<resources>
+
+    <style name="TextViewCustomStyle">
+        <item name="android:background">@drawable/background_item</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="ButtonCustomStyle">
+        <item name="android:text">CustomBtn</item>
+        <item name="android:textColor">@android:color/holo_purple</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!--Animate-->
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_down</item>
+    </style>
+</resources>
