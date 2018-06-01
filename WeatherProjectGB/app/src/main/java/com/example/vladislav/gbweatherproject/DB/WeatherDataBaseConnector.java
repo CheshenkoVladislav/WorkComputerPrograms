@@ -29,14 +29,8 @@ public class WeatherDataBaseConnector {
     }
 
     public void addWeather(String city, String description, double temp, String icon) {
-        database.insert(DataBaseHelper.TABLE_WEATHER, null,
+        database.replace(DataBaseHelper.TABLE_WEATHER, null,
                 getContentValue(city, description, temp, icon));
-    }
-
-    public void editWeather(String city, String description, double temp, String icon) {
-        String whereClause = DataBaseHelper.COLUMN_CITY + "=" + city;
-        database.update(DataBaseHelper.TABLE_WEATHER, getContentValue(city, description, temp, icon),
-                whereClause, null);
     }
 
     @NonNull

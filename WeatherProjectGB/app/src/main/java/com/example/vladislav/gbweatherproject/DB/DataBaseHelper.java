@@ -23,7 +23,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String createExec = "CREATE TABLE " + TABLE_WEATHER
                 + " (" + COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
-                COLUMN_CITY + " TEXT NOT NULL," +
+                COLUMN_CITY + " TEXT NOT NULL UNIQUE," +
                 COLUMN_WEATHER_DESCRIPTION + " TEXT NOT NULL," +
                 COLUMN_TEMPERATURE + " REAL NOT NULL," +
                 COLUMN_ICON + " TEXT);";

@@ -76,19 +76,24 @@ public class WeatherActivity extends AppCompatActivity
         getCurrentState();
     }
 
-    private void initToolbar() {
-        setSupportActionBar(toolbar);
-    }
-
-    private void initNavView() {
-        navigationView.setNavigationItemSelectedListener(this);
-        loadAvatar();
-    }
-
     private void loadAvatar() {
         Handler handler = new Handler();
         handler.post(new Avatar(getApplicationContext(),
                 navigationView.getHeaderView(0).findViewById(R.id.imageView)));
+    }
+
+    private void downloadImage(ImageView imageView, String imageId) {
+        String IMAGE_URL = "http://openweathermap.org/img/w/%s.png";
+        Picasso.get()
+                .load(String.format(IMAGE_URL, imageId))
+                .into(imageView);
+    }
+
+
+    ///////////////////INITS///////////////////
+
+    private void initToolbar() {
+        setSupportActionBar(toolbar);
     }
 
     private void initDrawer() {
@@ -97,6 +102,16 @@ public class WeatherActivity extends AppCompatActivity
                 R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+    }
+
+    private void initSavedCheckbox() {
+        checkbox1 = getSharedPreferences().getBoolean(KEY_CHECKBOX1, false);
+        checkbox2 = getSharedPreferences().getBoolean(KEY_CHECKBOX2, false);
+    }
+
+    private void initNavView() {
+        navigationView.setNavigationItemSelectedListener(this);
+        loadAvatar();
     }
 
     private void getCurrentState() {
@@ -111,32 +126,18 @@ public class WeatherActivity extends AppCompatActivity
         }
     }
 
-    private void saveState() {
-        if (city != null) {
-            getSharedPreferences()
-                    .edit()
-                    .putString(Coder.KEY_CITY, coder.encryptState(city))
-                    .putBoolean(KEY_CHECKBOX1, checkbox1)
-                    .putBoolean(KEY_CHECKBOX2, checkbox2)
-                    .apply();
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.nav_camera:
+            case R.id.nav_gallery:
+            case R.id.nav_manage:
+            case R.id.nav_send:
+            case R.id.nav_share:
+            case R.id.nav_slideshow:
         }
-    }
-
-    private String getSavedCity() {
-        return getSharedPreferences()
-                .getString(Coder.KEY_CITY, null);
-    }
-
-    private void initSavedCheckbox() {
-        checkbox1 = getSharedPreferences().getBoolean(KEY_CHECKBOX1, false);
-        checkbox2 = getSharedPreferences().getBoolean(KEY_CHECKBOX2, false);
-    }
-
-    private void downloadImage(ImageView imageView, String imageId) {
-        String IMAGE_URL = "http://openweathermap.org/img/w/%s.png";
-        Picasso.get()
-                .load(String.format(IMAGE_URL, imageId))
-                .into(imageView);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
@@ -169,11 +170,6 @@ public class WeatherActivity extends AppCompatActivity
             }
         }
         return false;
-    }
-
-    private void showSearchDialog() {
-        SearchCityDialog dialog = new SearchCityDialog();
-        dialog.show(getSupportFragmentManager(), search_dialog);
     }
 
     @SuppressLint("HandlerLeak")
@@ -219,20 +215,29 @@ public class WeatherActivity extends AppCompatActivity
         WeatherDataBaseConnector connector = new WeatherDataBaseConnector(this);
         connector.open();
         connector.addWeather(city, description, temp, icon);
+        connector.close();
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.nav_camera:
-            case R.id.nav_gallery:
-            case R.id.nav_manage:
-            case R.id.nav_send:
-            case R.id.nav_share:
-            case R.id.nav_slideshow:
+    private void showSearchDialog() {
+        SearchCityDialog dialog = new SearchCityDialog();
+        dialog.show(getSupportFragmentManager(), search_dialog);
+    }
+    //////////Prefs methids////////////
+
+    private String getSavedCity() {
+        return getSharedPreferences()
+                .getString(Coder.KEY_CITY, null);
+    }
+
+    private void saveState() {
+        if (city != null) {
+            getSharedPreferences()
+                    .edit()
+                    .putString(Coder.KEY_CITY, coder.encryptState(city))
+                    .putBoolean(KEY_CHECKBOX1, checkbox1)
+                    .putBoolean(KEY_CHECKBOX2, checkbox2)
+                    .apply();
         }
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     private SharedPreferences getSharedPreferences() {
