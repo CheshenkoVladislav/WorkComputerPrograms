@@ -1,4 +1,4 @@
-package com.example.vladislav.gbweatherproject;
+package com.example.vladislav.gbweatherproject.MainActivity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.vladislav.gbweatherproject.DB.WeatherDataBaseConnector;
 import com.example.vladislav.gbweatherproject.Data.Response;
+import com.example.vladislav.gbweatherproject.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
@@ -44,15 +44,16 @@ public class WeatherActivity extends AppCompatActivity
     DrawerLayout drawer;
     @BindView(R.id.nav_view)
     NavigationView navigationView;
-    private static final String KEY_WEATHER = "status";
     Stater stater;
+    private static final String KEY_WEATHER = "status";
     private static final String TAG = "WeatherActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: MAIN");
         setContentView(R.layout.activity_main);
-        stater = new Stater();
+        stater = (Stater) getApplication();
         initUI();
     }
 
@@ -83,8 +84,6 @@ public class WeatherActivity extends AppCompatActivity
                 .load(String.format(IMAGE_URL, imageId))
                 .into(imageView);
     }
-
-
     ///////////////////INITS///////////////////
 
     private void initToolbar() {
@@ -193,7 +192,6 @@ public class WeatherActivity extends AppCompatActivity
         weatherTv.setText(description);
         tempTv.setText(String.valueOf(temp) + " °C");
         downloadImage(imageView, response.getWeather().get(0).getIcon());
-        //Add to Data Base//
         addToDataBase(city, description, temp, icon);
     }
 

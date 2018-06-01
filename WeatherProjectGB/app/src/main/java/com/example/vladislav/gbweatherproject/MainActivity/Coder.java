@@ -1,4 +1,4 @@
-package com.example.vladislav.gbweatherproject;
+package com.example.vladislav.gbweatherproject.MainActivity;
 
 import android.annotation.SuppressLint;
 import android.util.Base64;
@@ -13,10 +13,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Coder {
-    public static final String KEY_CITY = "city";
     private static final String KEY = "B2fdgsdgi3bgn283";
-    private static final String KEY_WEATHER = "status";
-    private static final String PREFS_NAME = "saveState";
 
     public String encryptState(String city) {
         String encryptString = null;

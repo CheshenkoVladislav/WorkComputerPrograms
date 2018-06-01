@@ -1,4 +1,4 @@
-package com.example.vladislav.gbweatherproject;
+package com.example.vladislav.gbweatherproject.MainActivity;
 
 import android.app.Application;
 import android.content.SharedPreferences;
@@ -10,15 +10,15 @@ public class Stater extends Application {
     private static final String KEY_CHECKBOX1 = "checkbotStatus1";
     private static final String KEY_CHECKBOX2 = "checkbotStatus2";
     private String city;
-
     boolean checkbox1 = false;
     boolean checkbox2 = false;
     private static final String TAG = "Stater";
+    private Coder coder = new Coder();
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(TAG, "onCreate: ");
+        Log.d(TAG, "onCreate: APPLICATION");
         city = getSavedCity();
         initSavedCheckbox();
     }
@@ -27,7 +27,7 @@ public class Stater extends Application {
         if (city != null) {
             getSharedPreferences()
                     .edit()
-                    .putString(KEY_CITY, new Coder().encryptState(city))
+                    .putString(KEY_CITY, coder.encryptState(city))
                     .putBoolean(KEY_CHECKBOX1, checkbox1)
                     .putBoolean(KEY_CHECKBOX2, checkbox2)
                     .apply();
@@ -38,14 +38,14 @@ public class Stater extends Application {
         return getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
     }
 
-    private String getSavedCity() {
-        return getSharedPreferences()
-                .getString(KEY_CITY, null);
-    }
-
     void initSavedCheckbox() {
         checkbox1 = getSharedPreferences().getBoolean(KEY_CHECKBOX1, false);
         checkbox2 = getSharedPreferences().getBoolean(KEY_CHECKBOX2, false);
+    }
+
+    private String getSavedCity() {
+        return coder.decryptCurrentState(getSharedPreferences()
+                .getString(KEY_CITY, null));
     }
 
     public String getCity() {

@@ -1,4 +1,4 @@
-package com.example.vladislav.gbweatherproject;
+package com.example.vladislav.gbweatherproject.MainActivity;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.vladislav.gbweatherproject.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;

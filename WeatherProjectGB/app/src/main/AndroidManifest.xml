@@ -11,9 +11,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/ActivityCustomTheme">
+        android:theme="@style/ActivityCustomTheme"
+        android:name=".MainActivity.Stater">
         <activity
-            android:name=".WeatherActivity"
+            android:name=".MainActivity.WeatherActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

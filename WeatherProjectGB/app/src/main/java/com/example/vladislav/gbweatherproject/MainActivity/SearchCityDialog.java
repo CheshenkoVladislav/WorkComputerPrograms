@@ -1,4 +1,4 @@
-package com.example.vladislav.gbweatherproject;
+package com.example.vladislav.gbweatherproject.MainActivity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.widget.EditText;
+
+import com.example.vladislav.gbweatherproject.R;
 
 import java.util.Objects;
 
@@ -31,7 +33,7 @@ public class SearchCityDialog extends DialogFragment {
 
     private void setCityAndStartNewIntent(String city) {
         Intent intent = new Intent(getActivity(), WeatherActivity.class);
-        intent.putExtra(Coder.KEY_CITY, city);
+        intent.putExtra(Stater.KEY_CITY, city);
         startActivity(intent);
     }
 }
