@@ -1,4 +1,4 @@
-package com.example.vladislav.gbweatherproject.MainActivity;
+package com.example.vladislav.gbweatherproject;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.example.vladislav.gbweatherproject.DB.WeatherDataBaseConnector;
 import com.example.vladislav.gbweatherproject.Data.Response;
-import com.example.vladislav.gbweatherproject.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;

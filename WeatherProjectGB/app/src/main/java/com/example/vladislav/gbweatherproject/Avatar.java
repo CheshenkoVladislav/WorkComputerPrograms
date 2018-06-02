@@ -1,4 +1,4 @@
-package com.example.vladislav.gbweatherproject.MainActivity;
+package com.example.vladislav.gbweatherproject;
 
 import android.content.Context;
 import android.graphics.Bitmap;

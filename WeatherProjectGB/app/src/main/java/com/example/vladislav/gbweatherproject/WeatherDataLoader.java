@@ -1,4 +1,4 @@
-package com.example.vladislav.gbweatherproject.MainActivity;
+package com.example.vladislav.gbweatherproject;
 
 import com.example.vladislav.gbweatherproject.Data.Response;
 import com.google.gson.Gson;

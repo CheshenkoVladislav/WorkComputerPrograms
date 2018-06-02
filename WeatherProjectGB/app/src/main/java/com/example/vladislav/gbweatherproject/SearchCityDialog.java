@@ -1,4 +1,4 @@
-package com.example.vladislav.gbweatherproject.MainActivity;
+package com.example.vladislav.gbweatherproject;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.widget.EditText;
-
-import com.example.vladislav.gbweatherproject.R;
 
 import java.util.Objects;
 
