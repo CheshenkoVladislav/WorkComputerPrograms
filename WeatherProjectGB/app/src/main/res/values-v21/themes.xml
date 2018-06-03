@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="clearTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorClearSkyPrimary</item>
+        <item name="colorPrimaryDark">@color/colorClearSkyDark</item>
+        <item name="colorAccent">@color/colorClearSkyAccent</item>
+        <item name="android:actionMenuTextColor">@android:color/white</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="drawerArrowStyle">@style/HamburgerStyle</item>
+        <item name="android:actionOverflowButtonStyle">@style/actionOverflowButtonStyle</item>
+        <item name="android:toolbarStyle">@style/CustomToolbar</item>
+    </style>
+</resources>

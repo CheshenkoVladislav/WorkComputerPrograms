@@ -1,9 +1,7 @@
 <resources>
 
     <style name="TextViewCustomStyle">
-        <item name="android:background">@drawable/background_item</item>
-        <item name="android:textSize">24sp</item>
-        <item name="android:padding">8dp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="ButtonCustomStyle">

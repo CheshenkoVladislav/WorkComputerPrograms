@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +15,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +29,7 @@ import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class WeatherActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -43,6 +48,8 @@ public class WeatherActivity extends AppCompatActivity
     DrawerLayout drawer;
     @BindView(R.id.nav_view)
     NavigationView navigationView;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
     Stater stater;
     private static final String KEY_WEATHER = "status";
     private static final String TAG = "WeatherActivity";
@@ -69,6 +76,32 @@ public class WeatherActivity extends AppCompatActivity
         initDrawer();
         initNavView();
         initCurrentState();
+        setFabHandler();
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void setFabHandler() {
+        MaterialTapTargetPrompt mtp = new MaterialTapTargetPrompt.Builder(WeatherActivity.this)
+                .setTarget(fab)
+                .setPrimaryText("Share weather with you friends")
+                .setSecondaryText("You can send sms for you friend about weather, just click on the button")
+                .setBackgroundColour(getResources().getColor(R.color.colorTargetPrompt))
+                .create();
+        fab.setOnClickListener(v -> {
+            Log.d(TAG, "CLICK!");
+        });
+        fab.setOnLongClickListener(v ->{
+            if (mtp != null) {
+                mtp.show();
+            }
+            return true;
+        });
+        fab.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP && mtp != null) {
+                mtp.finish();
+            }
+            return false;
+        });
     }
 
     private void loadAvatar() {
@@ -183,6 +216,7 @@ public class WeatherActivity extends AppCompatActivity
 
     @SuppressLint("SetTextI18n")
     private void setInputData(Response response, TextView tempTv, TextView cityTv, TextView weatherTv) {
+//        initWeatherTheme(response.getWeather().get(0).getDescription());
         String city = response.getName();
         String description = response.getWeather().get(0).getDescription();
         double temp = response.getMain().getTemp();
@@ -192,6 +226,12 @@ public class WeatherActivity extends AppCompatActivity
         tempTv.setText(String.valueOf(temp) + " °C");
         downloadImage(imageView, response.getWeather().get(0).getIcon());
         addToDataBase(city, description, temp, icon);
+    }
+
+    private void initWeatherTheme(String description) {
+        if (description.contains("clear")){
+            toolbar.setBackgroundColor(getResources().getColor(R.color.colorClearSkyPrimary));
+        }
     }
 
     private void addToDataBase(String city, String description, double temp, String icon) {

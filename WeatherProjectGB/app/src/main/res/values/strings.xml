@@ -28,4 +28,5 @@
 
     <!--toasts-->
     <string name="external_storage_not_writtable">Can\'t access to external storage</string>
+    <string name="fab_description">Share friend</string>
 </resources>

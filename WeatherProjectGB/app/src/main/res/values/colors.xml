@@ -4,4 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#304ffe</color>
     <color name="backgroundColor">#ffffff</color>
+
+    <color name="colorClearSkyPrimary">#00acc1</color>
+    <color name="colorClearSkyDark">#00838f</color>
+    <color name="colorClearSkyAccent">#00e5ff</color>
+    <color name="colorTargetPrompt">#BB86FC</color>
 </resources>
