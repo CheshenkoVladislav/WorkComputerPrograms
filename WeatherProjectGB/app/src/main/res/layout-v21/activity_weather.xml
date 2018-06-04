@@ -9,10 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="?android:actionBarSize"
         android:elevation="8dp"
-        app:titleTextColor="@android:color/white"
         android:background="@color/colorClearSkyPrimary"
-        app:subtitleTextColor="@android:color/white"
         app:layout_constraintTop_toTopOf="parent"
+        app:subtitleTextColor="@android:color/white"
+        app:titleTextColor="@android:color/white"
         app:title="Weather" />
 
    <include layout="@layout/content_main" />

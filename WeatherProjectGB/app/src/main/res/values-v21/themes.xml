@@ -5,8 +5,10 @@
         <item name="colorPrimary">@color/colorClearSkyPrimary</item>
         <item name="colorPrimaryDark">@color/colorClearSkyDark</item>
         <item name="colorAccent">@color/colorClearSkyAccent</item>
-        <item name="android:actionMenuTextColor">@android:color/white</item>
-        <item name="windowActionModeOverlay">true</item>
+        <!--Цвет меню бэкграунда-->
+        <!--<item name="android:itemBackground">@android:color/white</item>-->
+        <!--Цвет видимого элемента меню-->
+        <item name="actionMenuTextColor">@android:color/white</item>
         <item name="drawerArrowStyle">@style/HamburgerStyle</item>
         <item name="android:actionOverflowButtonStyle">@style/actionOverflowButtonStyle</item>
         <item name="android:toolbarStyle">@style/CustomToolbar</item>

@@ -17,4 +17,8 @@
     <style name="actionOverflowButtonStyle" parent="@style/Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">@android:color/white</item>
     </style>
+
+    <style name="myCustomMenuTextApearance" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
+        <item name="android:textAppearance">@android:color/black</item>
+    </style>
 </resources>
