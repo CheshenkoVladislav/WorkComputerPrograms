@@ -33,5 +33,6 @@ public class SearchCityDialog extends DialogFragment {
         Intent intent = new Intent(getActivity(), WeatherActivity.class);
         intent.putExtra(Stater.KEY_CITY, city);
         startActivity(intent);
+        Objects.requireNonNull(getActivity()).finish();
     }
 }

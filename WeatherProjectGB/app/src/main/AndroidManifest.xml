@@ -15,7 +15,7 @@
         android:name=".Stater">
         <activity
             android:name=".WeatherActivity"
-            android:noHistory="true">
+            android:noHistory="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,6 +1,8 @@
 package com.example.vladislav.gbweatherproject;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,8 +18,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -89,6 +89,7 @@ public class WeatherActivity extends AppCompatActivity
                 .create();
         fab.setOnClickListener(v -> {
             Log.d(TAG, "CLICK!");
+            shareWeather();
         });
         fab.setOnLongClickListener(v ->{
             if (mtp != null) {
@@ -102,6 +103,17 @@ public class WeatherActivity extends AppCompatActivity
             }
             return false;
         });
+    }
+
+    private void shareWeather() {
+        String message = "Now in " + cityTv.getText()  + " " + tempTv.getText() + " and " +
+                weatherTv.getText();
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("sms:"));
+        intent.putExtra("sms_body", message);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_FROM_BACKGROUND);
+        startActivity(intent);
     }
 
     private void loadAvatar() {
@@ -226,12 +238,6 @@ public class WeatherActivity extends AppCompatActivity
         tempTv.setText(String.valueOf(temp) + " °C");
         downloadImage(imageView, response.getWeather().get(0).getIcon());
         addToDataBase(city, description, temp, icon);
-    }
-
-    private void initWeatherTheme(String description) {
-        if (description.contains("clear")){
-            toolbar.setBackgroundColor(getResources().getColor(R.color.colorClearSkyPrimary));
-        }
     }
 
     private void addToDataBase(String city, String description, double temp, String icon) {
