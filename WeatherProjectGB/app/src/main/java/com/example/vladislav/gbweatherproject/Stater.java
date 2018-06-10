@@ -44,8 +44,10 @@ public class Stater extends Application {
     }
 
     private String getSavedCity() {
-        return coder.decryptCurrentState(getSharedPreferences()
-                .getString(KEY_CITY, null));
+        if (getSharedPreferences().getString(KEY_CITY,null) != null){
+            return coder.decryptCurrentState(getSharedPreferences()
+                    .getString(KEY_CITY, null));
+        }else return null;
     }
 
     public String getCity() {

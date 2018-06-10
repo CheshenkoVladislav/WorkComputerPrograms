@@ -1,11 +1,16 @@
 package com.example.vladislav.gbweatherproject;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -21,18 +26,16 @@ import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.vladislav.gbweatherproject.DB.WeatherDataBaseConnector;
-import com.example.vladislav.gbweatherproject.Data.Response;
+import com.example.vladislav.gbweatherproject.Services.BindLoadWeatherService;
+import com.example.vladislav.gbweatherproject.Services.LoadWeatherService;
 import com.squareup.picasso.Picasso;
-
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class WeatherActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener{
     private static final String search_dialog = "search_dialog";
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -51,9 +54,12 @@ public class WeatherActivity extends AppCompatActivity
     @BindView(R.id.fab)
     FloatingActionButton fab;
     Stater stater;
-    private static final String KEY_WEATHER = "status";
+    public static final String KEY_WEATHER = "status";
     private static final String TAG = "WeatherActivity";
-
+    MyBroadcastReciever br;
+    BindLoadWeatherService myservice;
+    ServiceConnection service;
+    private boolean bind;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +67,43 @@ public class WeatherActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         stater = (Stater) getApplication();
         initUI();
+        service = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                myservice = ((BindLoadWeatherService.MyBinder)service).getService();
+                Log.d(TAG, "onServiceConnected: " + myservice);
+                bind = true;
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                bind = false;
+                Log.d(TAG, "onServiceDisconnected: ");
+            }
+        };
+        onBindService();
+
+    }
+    public void onBindService(){
+        Log.d(TAG, "onBindService: ");
+        if (!bind){
+            bindService(new Intent(this,BindLoadWeatherService.class),
+                    service,BIND_AUTO_CREATE);
+        }
+    }
+    public void onUnbindService(){
+        Log.d(TAG, "onUnbindService: ");
+        if (bind){
+            unbindService(service);
+        }
+    }
+
+    private void registerBroadcastReciever() {
+        br = new MyBroadcastReciever();
+        IntentFilter intentFilter = new IntentFilter(
+                LoadWeatherService.MY_INTENT_SERVICE);
+        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
+        registerReceiver(br,intentFilter);
     }
 
     @Override
@@ -68,6 +111,8 @@ public class WeatherActivity extends AppCompatActivity
         super.onPause();
         Log.d(TAG, "onPause: ");
         stater.saveState();
+        unregisterReceiver(br);
+        onUnbindService();
     }
 
     private void initUI() {
@@ -75,6 +120,7 @@ public class WeatherActivity extends AppCompatActivity
         initToolbar();
         initDrawer();
         initNavView();
+        registerBroadcastReciever();
         initCurrentState();
         setFabHandler();
     }
@@ -150,9 +196,11 @@ public class WeatherActivity extends AppCompatActivity
     private void initCurrentState() {
         if (getIntent().getStringExtra(Stater.KEY_CITY) != null) {
             stater.setCity(getIntent().getStringExtra(Stater.KEY_CITY));
-            renderJsonObj(stater.getCity());
+            Intent intent = new Intent(getBaseContext(),LoadWeatherService.class);
+            intent.putExtra(Stater.KEY_CITY, getIntent().getStringExtra(Stater.KEY_CITY));
+            startService(intent);
         } else if (stater.getCity() != null) {
-            renderJsonObj(stater.getCity());
+            startService(new Intent(getBaseContext(),LoadWeatherService.class));
         }
     }
 
@@ -200,56 +248,26 @@ public class WeatherActivity extends AppCompatActivity
         }
         return false;
     }
-
-    @SuppressLint("HandlerLeak")
-    private void renderJsonObj(String city) {
-        Handler handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                Bundle bundle = msg.getData();
-                Response response = (Response) bundle.getSerializable(KEY_WEATHER);
-                if (response != null) {
-                    setInputData(Objects.requireNonNull(response), tempTv, cityTv, weatherTv);
-                }
-            }
-        };
-        new Thread() {
-            @Override
-            public void run() {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(KEY_WEATHER, WeatherDataLoader.getJsonResponse(city));
-                Message message = new Message();
-                message.setData(bundle);
-                handler.sendMessage(message);
-                interrupt();
-            }
-        }.start();
-    }
-
     @SuppressLint("SetTextI18n")
-    private void setInputData(Response response, TextView tempTv, TextView cityTv, TextView weatherTv) {
-//        initWeatherTheme(response.getWeather().get(0).getDescription());
-        String city = response.getName();
-        String description = response.getWeather().get(0).getDescription();
-        double temp = response.getMain().getTemp();
-        String icon = response.getWeather().get(0).getIcon();
+    void setInputData(String city, double temp, String weather, String icon){
         cityTv.setText(city);
-        weatherTv.setText(description);
-        tempTv.setText(String.valueOf(temp) + " °C");
-        downloadImage(imageView, response.getWeather().get(0).getIcon());
-        addToDataBase(city, description, temp, icon);
-    }
-
-    private void addToDataBase(String city, String description, double temp, String icon) {
-        WeatherDataBaseConnector connector = new WeatherDataBaseConnector(this);
-        connector.open();
-        connector.addWeather(city, description, temp, icon);
-        connector.close();
+        weatherTv.setText(weather);
+        tempTv.setText(String.valueOf(temp) + "°C");
+        downloadImage(imageView,icon);
     }
 
     private void showSearchDialog() {
         SearchCityDialog dialog = new SearchCityDialog();
         dialog.show(getSupportFragmentManager(), search_dialog);
     }
-
+    class MyBroadcastReciever extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "onReceive: DATA");
+            setInputData(intent.getStringExtra("CITY"),
+                    intent.getExtras().getDouble("TEMP"),
+                    intent.getStringExtra("WEATHER"),
+                    intent.getStringExtra("ICON"));
+        }
+    }
 }

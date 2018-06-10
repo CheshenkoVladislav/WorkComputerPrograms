@@ -16,7 +16,6 @@ public class WeatherDataLoader {
             "weather?q=%s" +
             "&units=metric" +
             "&appid=%s";
-
     public static Response getJsonResponse(String city) {
         try {
             URL url = new URL(String.format(URL, city.toUpperCase(), APP_ID));
